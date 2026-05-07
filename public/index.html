@@ -1,0 +1,4699 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <meta name="theme-color" content="#1a1a2e" />
+    <title>MathArena ⚡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --y: #ffd93d;
+        --r: #ff6b6b;
+        --b: #4ecdc4;
+        --g: #6bcb77;
+        --p: #b57bff;
+        --o: #ff9f43;
+        --pk: #ff6eb4;
+        --navy: #1a1a2e;
+        --ink: #1e1e2e;
+        --ink2: #5a5a8a;
+        --bg: #f0f0ff;
+        --card: #fff;
+        --bdr: 3px solid var(--ink);
+        --bdr2: 2px solid var(--ink);
+        --rad: 20px;
+        --radm: 14px;
+        --rads: 10px;
+        --pill: 100px;
+        --sh: 5px 5px 0 var(--ink);
+        --shm: 4px 4px 0 var(--ink);
+        --shs: 3px 3px 0 var(--ink);
+        --fh: "Fredoka One", cursive;
+        --fb: "Nunito", sans-serif;
+        --grad-rainbow: linear-gradient(
+          135deg,
+          #ff6b6b,
+          #ff9f43,
+          #ffd93d,
+          #6bcb77,
+          #4ecdc4,
+          #b57bff
+        );
+        --grad-card: linear-gradient(160deg, #fff, #f8f0ff);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--fb);
+        font-size: 15px;
+        overflow-x: hidden;
+      }
+      body {
+        background:
+          radial-gradient(circle at 15% 25%, #ffd93d18, transparent 40%),
+          radial-gradient(circle at 85% 10%, #b57bff18, transparent 35%),
+          radial-gradient(circle at 50% 80%, #4ecdc418, transparent 40%),
+          #f0f0ff;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          radial-gradient(circle, #ffd93d66 1.5px, transparent 1.5px),
+          radial-gradient(circle, #ff6b6b44 1.5px, transparent 1.5px),
+          radial-gradient(circle, #4ecdc444 1.5px, transparent 1.5px);
+        background-size:
+          80px 80px,
+          110px 110px,
+          95px 95px;
+        background-position:
+          0 0,
+          40px 40px,
+          20px 55px;
+      }
+      #app {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 14px 12px 80px;
+        gap: 14px;
+      }
+      .logo-section {
+        text-align: center;
+      }
+      .logo-emoji-row {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+        animation: emojiFloat 3s ease-in-out infinite;
+      }
+      @keyframes emojiFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+      .logo {
+        font-family: var(--fh);
+        font-size: clamp(2.6rem, 8vw, 5rem);
+        letter-spacing: 2px;
+        line-height: 1;
+        background: var(--grad-rainbow);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(3px 3px 0 var(--ink));
+        animation: logoWobble 4s ease-in-out infinite;
+      }
+      @keyframes logoWobble {
+        0%,
+        100% {
+          transform: rotate(-1.5deg) scale(1);
+        }
+        50% {
+          transform: rotate(1.5deg) scale(1.02);
+        }
+      }
+      .tagline {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--p);
+        letter-spacing: 2px;
+        margin-top: 4px;
+        text-transform: uppercase;
+      }
+      .sec {
+        display: none;
+        width: 100%;
+        max-width: 500px;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .sec.on {
+        display: flex;
+      }
+      .card {
+        background: var(--grad-card);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        box-shadow: var(--sh);
+        padding: 22px 18px;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        display: block;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--grad-rainbow);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 11px 20px;
+        font-family: var(--fb);
+        font-size: 0.86rem;
+        font-weight: 900;
+        border: var(--bdr);
+        border-radius: var(--radm);
+        cursor: pointer;
+        box-shadow: var(--shs);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        white-space: nowrap;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+      .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none !important;
+        box-shadow: var(--shs) !important;
+      }
+      .btn-fw {
+        width: 100%;
+      }
+      .btn-y {
+        background: var(--y);
+        color: var(--ink);
+      }
+      .btn-r {
+        background: var(--r);
+        color: #fff;
+      }
+      .btn-b {
+        background: var(--b);
+        color: var(--ink);
+      }
+      .btn-g {
+        background: var(--g);
+        color: var(--ink);
+      }
+      .btn-p {
+        background: var(--p);
+        color: #fff;
+      }
+      .btn-o {
+        background: var(--o);
+        color: #fff;
+      }
+      .btn-w {
+        background: #fff;
+        color: var(--ink);
+      }
+      .btn-navy {
+        background: var(--navy);
+        color: #fff;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        box-shadow: none;
+        border: var(--bdr2);
+      }
+      .btn-ghost:hover {
+        background: #f0f0ff;
+        transform: none;
+      }
+      .btn-lg {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+        border-radius: var(--rad);
+      }
+      .btn-sm {
+        padding: 7px 12px;
+        font-size: 0.76rem;
+      }
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      textarea,
+      select {
+        background: #fafaff;
+        border: var(--bdr);
+        border-radius: var(--rads);
+        color: var(--ink);
+        font-family: var(--fb);
+        font-size: 16px;
+        font-weight: 700;
+        padding: 11px 13px;
+        width: 100%;
+        outline: none;
+        box-shadow: var(--shs);
+        appearance: none;
+        -webkit-appearance: none;
+        display: block;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--b);
+        box-shadow:
+          0 0 0 3px #4ecdc433,
+          var(--shs);
+      }
+      textarea {
+        resize: vertical;
+      }
+      .tab-row {
+        display: flex;
+        border: var(--bdr);
+        border-radius: var(--radm);
+        overflow: hidden;
+        margin-bottom: 14px;
+        box-shadow: var(--shs);
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px 6px;
+        font-family: var(--fb);
+        font-size: 0.78rem;
+        font-weight: 900;
+        border: none;
+        cursor: pointer;
+        background: #f0f0ff;
+        color: var(--ink2);
+        transition: all 0.2s;
+        text-transform: uppercase;
+      }
+      .tab-btn.active {
+        background: var(--y);
+        color: var(--ink);
+      }
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.on {
+        display: block;
+      }
+      .fdiv {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        width: 100%;
+        font-size: 0.68rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink2);
+      }
+      .fdiv::before,
+      .fdiv::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d0d0ee, transparent);
+        border-radius: 2px;
+      }
+      .lsm {
+        font-size: 0.67rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink2);
+        margin-bottom: 5px;
+        display: block;
+      }
+      .emoji-row {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 5px 0;
+      }
+      .emoji-btn {
+        font-size: 1.5rem;
+        border: 3px solid transparent;
+        border-radius: 10px;
+        padding: 3px 5px;
+        cursor: pointer;
+        background: #fff;
+        box-shadow: 2px 2px 0 #ddd;
+        transition: all 0.15s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .emoji-btn.sel {
+        border-color: var(--ink);
+        background: var(--y);
+        box-shadow: var(--shs);
+        transform: scale(1.15);
+      }
+      .user-badge {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 7px 14px;
+        background: linear-gradient(135deg, var(--y), var(--o));
+        border: var(--bdr);
+        border-radius: var(--pill);
+        box-shadow: var(--shs);
+        font-weight: 900;
+        font-size: 0.82rem;
+        flex-shrink: 0;
+        max-width: calc(100% - 100px);
+        overflow: hidden;
+      }
+      .u-avwrap {
+        position: relative;
+        flex-shrink: 0;
+      }
+      .u-av {
+        font-size: 1.4rem;
+      }
+      .u-avimg {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        object-fit: cover;
+      }
+      .u-name-txt {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .u-online {
+        position: absolute;
+        bottom: -1px;
+        right: -2px;
+        width: 9px;
+        height: 9px;
+        background: var(--g);
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        animation: bop 1.2s ease-in-out infinite;
+      }
+      @keyframes bop {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.6);
+        }
+      }
+      .status-bar {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        background: #fff;
+        border: var(--bdr2);
+        border-radius: var(--pill);
+        padding: 5px 12px;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .sdot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ccc;
+        border: 2px solid var(--ink);
+      }
+      .sdot.on {
+        background: var(--g);
+        box-shadow: 0 0 5px var(--g);
+      }
+      .sdot.off {
+        background: var(--r);
+      }
+      .wait-msg {
+        text-align: center;
+        padding: 11px 14px;
+        background: linear-gradient(135deg, #e8ffe8, #d4ffd4);
+        border: 2px solid var(--g);
+        border-radius: var(--radm);
+        font-weight: 800;
+        color: #1b5e20;
+        box-shadow: var(--shs);
+        animation: pulseAnim 2s ease-in-out infinite;
+        width: 100%;
+      }
+      @keyframes pulseAnim {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.65;
+        }
+      }
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.4) rotate(-5deg);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) rotate(0);
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: rotate(-2deg);
+        }
+        50% {
+          transform: rotate(2deg);
+        }
+      }
+      /* LOGIN */
+      .login-hero {
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .login-hero .big-emoji {
+        font-size: 3.5rem;
+        display: block;
+        animation: emojiFloat 2s ease-in-out infinite;
+      }
+      .login-hero h2 {
+        font-family: var(--fh);
+        font-size: 1.5rem;
+        margin-top: 6px;
+      }
+      .login-hero p {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--ink2);
+        margin-top: 4px;
+        line-height: 1.6;
+      }
+      /* MENU */
+      .menu-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 8px;
+      }
+      .action-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+      }
+      .action-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 16px;
+        border: var(--bdr);
+        border-radius: var(--rad);
+        cursor: pointer;
+        box-shadow: var(--shm);
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s;
+        width: 100%;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .action-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+      }
+      .action-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+      .action-card:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .action-card.create {
+        background: linear-gradient(135deg, #d4ffdb, #b8ffcc);
+      }
+      .action-card.create::before {
+        background: linear-gradient(90deg, var(--g), #a8ff8e);
+      }
+      .action-card.join {
+        background: linear-gradient(135deg, #d4f5ff, #b8ecff);
+      }
+      .action-card.join::before {
+        background: linear-gradient(90deg, var(--b), #7fdbff);
+      }
+      .action-card.browse {
+        background: linear-gradient(135deg, #f0d4ff, #e4b8ff);
+      }
+      .action-card.browse::before {
+        background: linear-gradient(90deg, var(--p), #d4b3ff);
+      }
+      .ac-icon {
+        font-size: 2.4rem;
+        flex-shrink: 0;
+      }
+      .ac-body .ac-title {
+        font-family: var(--fh);
+        font-size: 1.2rem;
+        color: var(--ink);
+      }
+      .ac-body .ac-sub {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--ink2);
+        margin-top: 3px;
+      }
+      .ac-arrow {
+        margin-left: auto;
+        font-size: 1.3rem;
+        opacity: 0.5;
+        flex-shrink: 0;
+      }
+      /* JOIN & BROWSE PANELS */
+      .collapsible-panel {
+        display: none;
+        flex-direction: column;
+        gap: 9px;
+        padding: 16px;
+        border: var(--bdr);
+        border-radius: var(--rad);
+        box-shadow: var(--shs);
+      }
+      .collapsible-panel.on {
+        display: flex;
+      }
+      .join-panel-inner {
+        background: linear-gradient(135deg, #d4f5ff, #e8f8ff);
+      }
+      .browse-panel-inner {
+        background: linear-gradient(135deg, #f0d4ff, #f8e8ff);
+      }
+      .join-code-inp {
+        text-transform: uppercase !important;
+        letter-spacing: 5px !important;
+        text-align: center !important;
+        font-family: var(--fh) !important;
+        font-size: 1.4rem !important;
+      }
+      .join-fb {
+        min-height: 20px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 0.78rem;
+        border-radius: var(--rads);
+        padding: 4px 10px;
+        transition: all 0.2s;
+      }
+      .join-fb.ok {
+        background: #e8ffe8;
+        color: #1b5e20;
+        border: 2px solid var(--g);
+      }
+      .join-fb.err {
+        background: #ffe8e8;
+        color: #b71c1c;
+        border: 2px solid var(--r);
+      }
+      .join-fb.info {
+        background: #e8f0ff;
+        color: var(--p);
+        border: 2px solid var(--p);
+      }
+      .pw-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .pw-label {
+        font-size: 0.7rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--r);
+      }
+      /* BROWSE */
+      .browse-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .browse-title {
+        font-family: var(--fh);
+        font-size: 1rem;
+        color: var(--ink);
+      }
+      .browse-empty {
+        text-align: center;
+        padding: 18px 0;
+        color: var(--ink2);
+        font-weight: 700;
+        font-size: 0.82rem;
+      }
+      .be-icon {
+        font-size: 2.2rem;
+        display: block;
+        margin-bottom: 7px;
+      }
+      .room-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 13px;
+        background: #fff;
+        border: var(--bdr2);
+        border-radius: var(--radm);
+        box-shadow: var(--shs);
+        cursor: pointer;
+        transition: all 0.15s;
+        animation: slideUp 0.3s ease both;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .room-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+      .room-card:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .rc-av {
+        font-size: 1.6rem;
+        flex-shrink: 0;
+      }
+      .rc-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .rc-host {
+        font-weight: 900;
+        font-size: 0.82rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .rc-meta {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-top: 3px;
+      }
+      .rc-chip {
+        font-size: 0.62rem;
+        font-weight: 900;
+        padding: 2px 7px;
+        border-radius: var(--pill);
+        border: 1px solid var(--ink);
+        background: #f8f8ff;
+      }
+      .rc-chip.diff-easy {
+        background: #d4ffdb;
+      }
+      .rc-chip.diff-medium {
+        background: var(--y);
+      }
+      .rc-chip.diff-hard {
+        background: #ffd4d4;
+      }
+      .rc-chip.diff-chaos {
+        background: linear-gradient(90deg, #ffd4ff, #d4d4ff);
+      }
+      .rc-right {
+        flex-shrink: 0;
+        text-align: right;
+      }
+      .rc-players {
+        font-family: var(--fh);
+        font-size: 1.1rem;
+        color: var(--ink);
+      }
+      .rc-max {
+        font-size: 0.62rem;
+        color: var(--ink2);
+        font-weight: 700;
+      }
+      .rc-join-btn {
+        background: var(--g);
+        border: 2px solid var(--ink);
+        border-radius: var(--rads);
+        padding: 5px 10px;
+        font-size: 0.7rem;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 2px 2px 0 var(--ink);
+        margin-top: 4px;
+        text-transform: uppercase;
+        display: block;
+        -webkit-tap-highlight-color: transparent;
+      }
+      /* SETTINGS */
+      #sec-create {
+        max-width: 520px;
+      }
+      .settings-header {
+        background: linear-gradient(135deg, #1a1a2e, #2d2d5e);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 18px;
+        width: 100%;
+        box-shadow: var(--sh);
+        text-align: center;
+        color: #fff;
+      }
+      .sh-title {
+        font-family: var(--fh);
+        font-size: 1.7rem;
+        letter-spacing: 2px;
+      }
+      .sh-sub {
+        font-size: 0.76rem;
+        font-weight: 700;
+        opacity: 0.7;
+        margin-top: 3px;
+      }
+      .settings-form {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        width: 100%;
+      }
+      .sf-row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .sf-row > label {
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--ink2);
+      }
+      .opt-pills {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .opt-pill {
+        padding: 7px 12px;
+        border: var(--bdr2);
+        border-radius: var(--pill);
+        font-family: var(--fb);
+        font-size: 0.75rem;
+        font-weight: 800;
+        cursor: pointer;
+        background: #f8f8ff;
+        color: var(--ink2);
+        transition: all 0.15s;
+        box-shadow: 2px 2px 0 #ddd;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .opt-pill.sel {
+        border-color: var(--ink);
+        box-shadow: var(--shs);
+        color: var(--ink);
+      }
+      .opt-pill.sel.diff-easy {
+        background: #d4ffdb;
+      }
+      .opt-pill.sel.diff-medium {
+        background: #fff3d4;
+      }
+      .opt-pill.sel.diff-hard {
+        background: #ffd4d4;
+      }
+      .opt-pill.sel.diff-chaos {
+        background: linear-gradient(135deg, #ffd4ff, #d4d4ff);
+      }
+      .opt-pill.sel.op {
+        background: var(--y);
+      }
+      .opt-pill.sel.q-count {
+        background: var(--b);
+      }
+      .opt-pill.sel.t-time {
+        background: var(--o);
+        color: #fff;
+      }
+      .opt-pill.sel.ct-time {
+        background: var(--pk);
+        color: #fff;
+      }
+      .diff-desc {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--ink2);
+        padding: 6px 10px;
+        background: #f8f0ff;
+        border-radius: var(--rads);
+        border: 1px solid #ddd;
+        line-height: 1.5;
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .tr-info .tr-title {
+        font-size: 0.83rem;
+        font-weight: 800;
+      }
+      .tr-info .tr-sub {
+        font-size: 0.7rem;
+        color: var(--ink2);
+        margin-top: 2px;
+        font-weight: 700;
+      }
+      .toggle {
+        position: relative;
+        width: 50px;
+        height: 27px;
+        flex-shrink: 0;
+      }
+      .toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+      .toggle-slider {
+        position: absolute;
+        inset: 0;
+        background: #ddd;
+        border-radius: var(--pill);
+        border: 2px solid var(--ink);
+        cursor: pointer;
+        transition: background 0.2s;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        background: #fff;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        left: 3px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: left 0.2s;
+      }
+      .toggle input:checked + .toggle-slider {
+        background: var(--g);
+      }
+      .toggle input:checked + .toggle-slider::before {
+        left: 24px;
+      }
+      .pw-field {
+        background: linear-gradient(135deg, #fff0ff, #ffe8ff);
+        border: 3px solid var(--pk);
+        border-radius: var(--radm);
+        padding: 13px;
+        display: none;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .pw-field.on {
+        display: flex;
+      }
+      /* LOBBY */
+      #sec-lobby {
+        max-width: 500px;
+      }
+      .lobby-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 8px;
+      }
+      .lobby-actions {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .full-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--r);
+        color: #fff;
+        border: var(--bdr2);
+        border-radius: var(--pill);
+        padding: 4px 9px;
+        font-size: 0.7rem;
+        font-weight: 900;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .rc-box {
+        text-align: center;
+        background: linear-gradient(135deg, var(--navy), #2d2d5e);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 14px;
+        box-shadow: var(--sh);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .rc-box::before,
+      .rc-box::after {
+        content: "⚡ ⚡ ⚡ ⚡ ⚡";
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.62rem;
+        opacity: 0.12;
+        letter-spacing: 6px;
+      }
+      .rc-box::before {
+        top: 5px;
+      }
+      .rc-box::after {
+        bottom: 5px;
+      }
+      .rc-lbl {
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        opacity: 0.55;
+        margin-bottom: 3px;
+      }
+      .rc-code-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .rc-code {
+        font-family: var(--fh);
+        font-size: clamp(1.5rem, 5vw, 2.3rem);
+        letter-spacing: clamp(4px, 1.5vw, 9px);
+        text-shadow: 0 0 20px #ffffff44;
+      }
+      .rc-copy-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: var(--rads);
+        padding: 5px 9px;
+        font-size: 0.72rem;
+        font-weight: 900;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .rc-copy-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      .rc-copy-btn.copied {
+        background: var(--g);
+        border-color: var(--g);
+        color: var(--ink);
+      }
+      .rc-hint {
+        font-size: 0.65rem;
+        font-weight: 700;
+        opacity: 0.4;
+        margin-top: 3px;
+      }
+      .rc-private-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--pk);
+        color: #fff;
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        padding: 3px 9px;
+        font-size: 0.68rem;
+        font-weight: 900;
+        margin-top: 5px;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .settings-chips {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .sch {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 4px 9px;
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        font-size: 0.68rem;
+        font-weight: 900;
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .sch.diff-easy {
+        background: #d4ffdb;
+      }
+      .sch.diff-medium {
+        background: var(--y);
+      }
+      .sch.diff-hard {
+        background: var(--r);
+        color: #fff;
+      }
+      .sch.diff-chaos {
+        background: linear-gradient(90deg, var(--pk), var(--p));
+        color: #fff;
+      }
+      .sch.blue {
+        background: var(--b);
+      }
+      .sch.orange {
+        background: var(--o);
+        color: #fff;
+      }
+      .sch.green {
+        background: var(--g);
+      }
+      .wi-strip {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+      }
+      .wi-chip {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 9px 5px;
+        border: var(--bdr2);
+        border-radius: var(--radm);
+        box-shadow: var(--shs);
+        text-align: center;
+        min-width: 0;
+      }
+      .wi-chip.win {
+        background: linear-gradient(135deg, #fff9c4, #ffe082);
+      }
+      .wi-chip.lose {
+        background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
+      }
+      .wic-n {
+        font-family: var(--fh);
+        font-size: 1.8rem;
+        line-height: 1.1;
+      }
+      .wic-lbl {
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--ink2);
+        margin-top: 2px;
+      }
+      .pg {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        width: 100%;
+      }
+      .pc {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 10px;
+        background: #fff;
+        border: var(--bdr2);
+        border-radius: var(--radm);
+        box-shadow: var(--shs);
+        font-size: 0.76rem;
+        font-weight: 800;
+        animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .pc.host {
+        background: #fff9c4;
+        border-color: var(--o);
+      }
+      .pc.done {
+        background: #f0fff4;
+        border-color: var(--g);
+      }
+      .pc .pav {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .pc .pavimg {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      .pc .pname {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+      }
+      .pslot {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f8ff;
+        border: 2px dashed #ccc;
+        border-radius: var(--radm);
+        min-height: 42px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #bbb;
+      }
+      .chatbox {
+        background: #fafaff;
+        border: var(--bdr2);
+        border-radius: var(--radm);
+        padding: 9px;
+        height: 100px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        scrollbar-width: thin;
+        scrollbar-color: #ddd transparent;
+      }
+      .cm {
+        font-size: 0.74rem;
+        display: flex;
+        gap: 5px;
+        line-height: 1.4;
+        word-break: break-word;
+      }
+      .cm .csender {
+        font-weight: 900;
+        color: var(--r);
+        flex-shrink: 0;
+        max-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .cm .csys {
+        color: #aaa;
+        font-style: italic;
+        font-size: 0.7rem;
+      }
+      .ci {
+        display: flex;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .ci input {
+        font-size: 15px;
+        padding: 8px 10px;
+      }
+      /* COUNTDOWN */
+      #countdown-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #1a1a2e99;
+        backdrop-filter: blur(8px);
+      }
+      #countdown-overlay.on {
+        display: flex;
+      }
+      .countdown-num {
+        font-family: var(--fh);
+        font-size: clamp(5rem, 20vw, 10rem);
+        color: #fff;
+        text-shadow:
+          0 0 40px var(--y),
+          0 0 80px var(--y);
+        animation: countPop 0.8s ease-out forwards;
+      }
+      @keyframes countPop {
+        0% {
+          transform: scale(2);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(0.9);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .countdown-label {
+        font-family: var(--fh);
+        font-size: 1.3rem;
+        color: var(--y);
+        letter-spacing: 3px;
+        margin-top: 8px;
+        opacity: 0.8;
+      }
+      /* COLLECTING */
+      #sec-collecting {
+        max-width: 520px;
+      }
+      .col-header {
+        background: linear-gradient(135deg, #ff9f43, #ffd93d);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 18px;
+        width: 100%;
+        box-shadow: var(--sh);
+        text-align: center;
+      }
+      .col-title {
+        font-family: var(--fh);
+        font-size: 1.8rem;
+        color: var(--ink);
+      }
+      .col-sub {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #55440099;
+        margin-top: 3px;
+        line-height: 1.5;
+      }
+      .pbwrap {
+        height: 13px;
+        background: #ffe;
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        overflow: hidden;
+        box-shadow: var(--shs);
+      }
+      .pb {
+        height: 100%;
+        background: linear-gradient(90deg, var(--b), var(--g));
+        transition: width 0.4s ease;
+        border-radius: var(--pill);
+      }
+      .ps-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+      .psc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 10px;
+        background: #fff;
+        border: 2px solid #eee;
+        border-radius: var(--radm);
+        font-size: 0.76rem;
+        font-weight: 800;
+        transition: all 0.3s;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .psc.done {
+        background: #f0fff4;
+        border-color: var(--g);
+        box-shadow: 2px 2px 0 var(--g);
+      }
+      .psc .psav {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .psc .psname {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+      }
+      .psc .pss {
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        color: #ddd;
+      }
+      .psc.done .pss {
+        color: var(--g);
+      }
+      .pi-box {
+        background: #fff;
+        border: 3px solid var(--o);
+        border-radius: var(--rad);
+        padding: 16px 14px;
+        box-shadow: var(--shs);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      .pi-box.done-box {
+        border-color: var(--g);
+        background: linear-gradient(135deg, #f0fff4, #e8ffe8);
+      }
+      .pi-title {
+        font-family: var(--fh);
+        font-size: 1.2rem;
+        color: var(--r);
+        text-align: center;
+        margin-bottom: 7px;
+      }
+      .pi-done-title {
+        font-family: var(--fh);
+        font-size: 1.2rem;
+        color: var(--g);
+        text-align: center;
+      }
+      .pi-hint {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--ink2);
+        text-align: center;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+      .pi-textarea-wrap {
+        position: relative;
+        width: 100%;
+      }
+      .pi-textarea-wrap textarea {
+        display: block;
+        width: 100%;
+        min-height: 88px;
+        max-height: 150px;
+        resize: vertical;
+        box-sizing: border-box;
+        padding: 11px 13px 26px 13px;
+      }
+      .pi-charcount {
+        position: absolute;
+        bottom: 7px;
+        right: 9px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: var(--ink2);
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 4px;
+        padding: 1px 4px;
+      }
+      .pi-preview {
+        background: #fffde7;
+        border: 2px solid var(--y);
+        border-radius: var(--rads);
+        padding: 10px 12px;
+        font-size: 0.83rem;
+        font-weight: 700;
+        line-height: 1.5;
+        margin-top: 8px;
+        word-break: break-word;
+      }
+      .col-timer {
+        text-align: center;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--r);
+      }
+      .col-timer b {
+        font-family: var(--fh);
+        font-size: 1.3rem;
+      }
+      /* GAME */
+      #sec-game {
+        max-width: 520px;
+      }
+      .game-topbar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        background: var(--navy);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 10px 14px;
+        box-shadow: var(--sh);
+        color: #fff;
+      }
+      .gtb-left,
+      .gtb-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 58px;
+      }
+      .gtb-num {
+        font-family: var(--fh);
+        font-size: 0.95rem;
+        line-height: 1;
+      }
+      .gtb-lbl {
+        font-size: 0.58rem;
+        font-weight: 800;
+        opacity: 0.55;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      .gtb-center {
+        font-family: var(--fh);
+        font-size: clamp(1rem, 4vw, 1.5rem);
+        color: var(--y);
+        text-shadow: 0 0 20px #ffd93d66;
+        letter-spacing: 1px;
+      }
+      .timer-wrap {
+        width: 100%;
+        background: #fff;
+        border: var(--bdr);
+        border-radius: var(--radm);
+        padding: 9px 13px;
+        box-shadow: var(--shs);
+      }
+      .timer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .timer-badge {
+        font-family: var(--fh);
+        font-size: 1.05rem;
+        color: var(--ink);
+      }
+      .timer-badge.urgent {
+        color: var(--r);
+        animation: shake 0.3s ease-in-out infinite;
+      }
+      .tbar-bg {
+        height: 11px;
+        background: #f0f0ff;
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        overflow: hidden;
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .tbar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--g), var(--y), var(--r));
+        border-radius: var(--pill);
+        transition: width 0.1s linear;
+      }
+      .qdisplay {
+        width: 100%;
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: clamp(16px, 5vw, 28px) 14px;
+        text-align: center;
+        background: linear-gradient(135deg, var(--navy), #2d2d6e);
+        box-shadow: var(--sh);
+        animation: qpop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .qdisplay::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: var(--rad);
+        background: linear-gradient(
+          135deg,
+          #7f7fff33,
+          transparent 50%,
+          #ff7fff22
+        );
+        pointer-events: none;
+      }
+      @keyframes qpop {
+        from {
+          opacity: 0;
+          transform: scale(0.6) rotate(-5deg);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) rotate(0);
+        }
+      }
+      .ql {
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: #ffffff55;
+        margin-bottom: 7px;
+      }
+      .qt {
+        font-family: var(--fh);
+        font-size: clamp(2rem, 9vw, 4.5rem);
+        color: #fff;
+        text-shadow:
+          0 0 30px #ffffff44,
+          3px 3px 0 #00000044;
+        letter-spacing: 2px;
+        word-break: break-word;
+      }
+      .arow {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+      }
+      .arow input {
+        font-size: 1.1rem;
+        font-family: var(--fh);
+        text-align: center;
+        letter-spacing: 2px;
+        border-color: var(--navy);
+      }
+      .arow input:focus {
+        border-color: var(--p);
+        box-shadow:
+          0 0 0 3px #b57bff33,
+          var(--shs);
+      }
+      .afb {
+        text-align: center;
+        font-weight: 900;
+        font-size: 0.92rem;
+        min-height: 26px;
+        border-radius: var(--radm);
+        padding: 5px 12px;
+        transition: all 0.2s;
+      }
+      .afb.ok {
+        background: linear-gradient(135deg, var(--g), #a8ff8e);
+        border: 2px solid var(--ink);
+        color: var(--ink);
+        animation: popIn 0.3s;
+      }
+      .afb.no {
+        background: linear-gradient(135deg, var(--r), #ff8e8e);
+        border: 2px solid var(--ink);
+        color: #fff;
+        animation: popIn 0.3s;
+      }
+      .livesc {
+        width: 100%;
+        background: var(--card);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 12px;
+        box-shadow: var(--shm);
+      }
+      .ls-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .ls-t {
+        font-family: var(--fh);
+        font-size: 1rem;
+      }
+      .ls-danger {
+        font-size: 0.62rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: var(--r);
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border: 2px solid var(--r);
+        border-radius: var(--pill);
+        background: #fff0f0;
+        flex-shrink: 0;
+      }
+      .sr {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 0;
+        border-bottom: 2px dashed #f0f0ff;
+        font-size: 0.78rem;
+        font-weight: 800;
+        transition: all 0.3s;
+      }
+      .sr:last-child {
+        border-bottom: none;
+      }
+      .sr .srn {
+        font-family: var(--fh);
+        width: 24px;
+        color: var(--ink2);
+        flex-shrink: 0;
+      }
+      .sr.r1 .srn {
+        color: #ffd700;
+        -webkit-text-stroke: 1px var(--ink);
+      }
+      .sr .srav {
+        font-size: 1.05rem;
+        flex-shrink: 0;
+      }
+      .sr .sravimg {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      .sr .srname {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+      }
+      .sr .srpts {
+        font-family: var(--fh);
+        background: var(--y);
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        padding: 2px 8px;
+        font-size: 0.78rem;
+        box-shadow: 1px 1px 0 var(--ink);
+        flex-shrink: 0;
+      }
+      .sr .streak {
+        font-size: 0.75rem;
+        flex-shrink: 0;
+        animation: popIn 0.3s;
+      }
+      .dz-sep {
+        font-size: 0.62rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: var(--r);
+        text-align: center;
+        padding: 3px 0;
+        opacity: 0.7;
+      }
+      .reaction-popup {
+        position: fixed;
+        pointer-events: none;
+        font-size: 2rem;
+        z-index: 999;
+        animation: reactionFly 1.2s ease forwards;
+      }
+      @keyframes reactionFly {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-80px) scale(1.6);
+        }
+      }
+      /* SPIN */
+      #sec-spin {
+        max-width: 520px;
+      }
+      .spin-hdr {
+        font-family: var(--fh);
+        font-size: 2rem;
+        text-align: center;
+        filter: drop-shadow(3px 3px 0 var(--o));
+        letter-spacing: 2px;
+      }
+      .spin-sub {
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.78rem;
+        color: var(--ink2);
+      }
+      .wheel-wrap {
+        position: relative;
+        width: min(270px, calc(100vw - 56px));
+        height: min(270px, calc(100vw - 56px));
+        margin: 0 auto;
+      }
+      #spinCanvas {
+        border-radius: 50%;
+        border: 5px solid var(--ink);
+        box-shadow: var(--sh);
+        display: block;
+      }
+      .wheel-arrow {
+        position: absolute;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        filter: drop-shadow(0 2px 0 var(--ink));
+        z-index: 10;
+        animation: arrowbounce 0.45s ease-in-out infinite alternate;
+      }
+      @keyframes arrowbounce {
+        from {
+          transform: translateX(-50%) translateY(0);
+        }
+        to {
+          transform: translateX(-50%) translateY(-6px);
+        }
+      }
+      .spin-wait {
+        font-family: var(--fh);
+        font-size: 1.05rem;
+        color: var(--p);
+        text-align: center;
+        animation: pulseAnim 1s ease-in-out infinite;
+      }
+      .chosen-box {
+        width: 100%;
+        background: linear-gradient(135deg, var(--y), var(--o));
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 16px;
+        text-align: center;
+        box-shadow: var(--sh);
+        animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .chosen-lbl {
+        font-size: 0.66rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--ink2);
+        margin-bottom: 5px;
+      }
+      .chosen-text {
+        font-family: var(--fh);
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        color: var(--ink);
+        line-height: 1.5;
+        word-break: break-word;
+      }
+      .group-box {
+        width: 100%;
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 12px;
+        box-shadow: var(--shs);
+      }
+      .group-box.win-box {
+        background: linear-gradient(135deg, #fffde7, #fff8c4);
+      }
+      .group-box.lose-box {
+        background: linear-gradient(135deg, #ffebee, #ffcdd2);
+      }
+      .gt {
+        font-family: var(--fh);
+        font-size: 0.95rem;
+        margin-bottom: 7px;
+        text-align: center;
+      }
+      .pchips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+      }
+      .pchip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border: var(--bdr2);
+        border-radius: var(--pill);
+        font-size: 0.75rem;
+        font-weight: 800;
+        box-shadow: var(--shs);
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .pchip.wch {
+        background: var(--y);
+      }
+      .pchip.lch {
+        background: var(--r);
+        color: #fff;
+        border-color: var(--ink);
+      }
+      .pchip .pcav {
+        font-size: 1rem;
+      }
+      /* GAME OVER */
+      #sec-gameover {
+        max-width: 520px;
+      }
+      .go-hero {
+        width: 100%;
+        text-align: center;
+        background: linear-gradient(135deg, var(--navy), #2d2d6e);
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 22px 14px;
+        box-shadow: var(--sh);
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .go-hero::before {
+        content: "🎉 🎊 🏆 🎊 🎉";
+        position: absolute;
+        top: 7px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.85rem;
+        opacity: 0.25;
+        letter-spacing: 5px;
+      }
+      .go-title {
+        font-family: var(--fh);
+        font-size: clamp(1.8rem, 7vw, 2.6rem);
+        text-shadow: 0 0 30px #ffffff33;
+        animation: logoWobble 2s ease-in-out infinite;
+        letter-spacing: 2px;
+      }
+      .go-sub {
+        font-size: 0.76rem;
+        font-weight: 700;
+        opacity: 0.6;
+        margin-top: 3px;
+      }
+      .punish-banner {
+        width: 100%;
+        background: linear-gradient(135deg, var(--r), var(--o));
+        border: var(--bdr);
+        border-radius: var(--rad);
+        padding: 16px;
+        text-align: center;
+        box-shadow: var(--sh);
+      }
+      .pb-lbl {
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #ffffff88;
+        margin-bottom: 5px;
+      }
+      .pb-txt {
+        font-family: var(--fh);
+        font-size: clamp(1rem, 3vw, 1.25rem);
+        color: #fff;
+        text-shadow: 2px 2px 0 #00000033;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+      .results-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
+      .res-sep {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.68rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--r);
+        margin: 4px 0;
+      }
+      .res-sep::before,
+      .res-sep::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background: var(--r);
+        border-radius: 2px;
+        opacity: 0.5;
+      }
+      .rrow {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 11px;
+        background: #fff;
+        border: var(--bdr2);
+        border-radius: var(--radm);
+        box-shadow: var(--shs);
+        animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .rrow:nth-child(1) {
+        animation-delay: 0.04s;
+      }
+      .rrow:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .rrow:nth-child(3) {
+        animation-delay: 0.16s;
+      }
+      .rrow:nth-child(4) {
+        animation-delay: 0.22s;
+      }
+      .rrow:nth-child(5) {
+        animation-delay: 0.28s;
+      }
+      .rrow:nth-child(n + 6) {
+        animation-delay: 0.34s;
+      }
+      .rrow.win {
+        background: linear-gradient(135deg, #fffde7, #fffbcc);
+        border-color: var(--y);
+      }
+      .rrow.top1 {
+        background: linear-gradient(135deg, #fff9c4, #ffe082);
+        border: 3px solid var(--o);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+      .rrow.lose {
+        background: #fff0f0;
+        border-color: var(--r);
+      }
+      .rrow .rbadge {
+        font-family: var(--fh);
+        font-size: 1.3rem;
+        width: 32px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .rrow .rav {
+        font-size: 1.3rem;
+        flex-shrink: 0;
+      }
+      .rrow .ravimg {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      .rrow .rname {
+        flex: 1;
+        font-weight: 800;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+        font-size: 0.82rem;
+      }
+      .rrow .rscore {
+        font-family: var(--fh);
+        background: var(--y);
+        border: 2px solid var(--ink);
+        border-radius: var(--pill);
+        padding: 2px 9px;
+        box-shadow: 2px 2px 0 var(--ink);
+        font-size: 0.8rem;
+        flex-shrink: 0;
+      }
+      /* TOAST */
+      #toast-container {
+        position: fixed;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        pointer-events: none;
+        width: 90%;
+        max-width: 360px;
+      }
+      .toast {
+        background: var(--ink);
+        color: #fff;
+        border-radius: var(--radm);
+        padding: 10px 16px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        box-shadow: var(--sh);
+        animation: toastIn 0.3s ease;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+      .toast.ok {
+        background: var(--g);
+        color: var(--ink);
+      }
+      .toast.err {
+        background: var(--r);
+      }
+      .toast.warn {
+        background: var(--o);
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      /* MUSIC */
+      #music-btn {
+        position: fixed;
+        bottom: 18px;
+        right: 16px;
+        z-index: 99;
+        background: linear-gradient(135deg, var(--p), var(--pk));
+        color: #fff;
+        border: var(--bdr);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        cursor: pointer;
+        box-shadow: var(--shm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #music-btn:hover {
+        transform: scale(1.12) rotate(-10deg);
+      }
+      #music-btn.playing {
+        animation: musicpulse 1s ease-in-out infinite alternate;
+      }
+      @keyframes musicpulse {
+        from {
+          box-shadow: var(--shm);
+        }
+        to {
+          box-shadow:
+            0 0 0 7px #b57bff33,
+            var(--shm);
+        }
+      }
+      /* RESPONSIVE */
+      @media (max-width: 480px) {
+        #app {
+          padding: 10px 10px 70px;
+          gap: 10px;
+        }
+        .logo-emoji-row {
+          font-size: 1.3rem;
+          letter-spacing: 2px;
+        }
+        .logo {
+          font-size: clamp(2rem, 10vw, 3.2rem);
+        }
+        .tagline {
+          font-size: 0.68rem;
+        }
+        .card {
+          padding: 16px 13px;
+        }
+        .sec {
+          max-width: 100%;
+          gap: 9px;
+        }
+        #sec-create,
+        #sec-collecting,
+        #sec-game,
+        #sec-spin,
+        #sec-gameover,
+        #sec-lobby {
+          max-width: 100%;
+        }
+        .btn {
+          padding: 10px 14px;
+          font-size: 0.8rem;
+        }
+        .btn-lg {
+          padding: 13px 18px;
+          font-size: 0.88rem;
+        }
+        .btn-sm {
+          padding: 6px 10px;
+          font-size: 0.72rem;
+        }
+        :root {
+          --sh: 4px 4px 0 var(--ink);
+          --shm: 3px 3px 0 var(--ink);
+          --shs: 2px 2px 0 var(--ink);
+        }
+        .login-hero .big-emoji {
+          font-size: 2.8rem;
+        }
+        .login-hero h2 {
+          font-size: 1.3rem;
+        }
+        .user-badge {
+          padding: 6px 10px;
+          font-size: 0.78rem;
+          gap: 7px;
+        }
+        .u-av {
+          font-size: 1.2rem;
+        }
+        .action-card {
+          padding: 14px 12px;
+          gap: 10px;
+        }
+        .ac-icon {
+          font-size: 2rem;
+        }
+        .ac-body .ac-title {
+          font-size: 1.05rem;
+        }
+        .ac-body .ac-sub {
+          font-size: 0.68rem;
+        }
+        .ac-arrow {
+          display: none;
+        }
+        .join-code-inp {
+          letter-spacing: 4px !important;
+          font-size: 1.2rem !important;
+        }
+        .sh-title {
+          font-size: 1.4rem;
+        }
+        .opt-pill {
+          padding: 6px 10px;
+          font-size: 0.72rem;
+        }
+        .lobby-top {
+          flex-wrap: wrap;
+        }
+        .rc-code {
+          font-size: clamp(1.3rem, 7vw, 1.9rem);
+          letter-spacing: clamp(3px, 1.2vw, 6px);
+        }
+        .wi-chip .wic-n {
+          font-size: 1.5rem;
+        }
+        .pg {
+          gap: 5px;
+        }
+        .pc {
+          padding: 7px 9px;
+          font-size: 0.72rem;
+          gap: 5px;
+        }
+        .pslot {
+          min-height: 38px;
+          font-size: 0.64rem;
+        }
+        .chatbox {
+          height: 85px;
+        }
+        .col-title {
+          font-size: 1.6rem;
+        }
+        .pi-box {
+          padding: 13px 11px;
+        }
+        .pi-title {
+          font-size: 1.1rem;
+        }
+        .pi-textarea-wrap textarea {
+          min-height: 78px;
+        }
+        .game-topbar {
+          padding: 8px 11px;
+          border-radius: var(--radm);
+        }
+        .gtb-left,
+        .gtb-right {
+          min-width: 50px;
+        }
+        .gtb-num {
+          font-size: 0.85rem;
+        }
+        .gtb-center {
+          font-size: clamp(0.9rem, 3.5vw, 1.3rem);
+        }
+        .gtb-lbl {
+          font-size: 0.54rem;
+        }
+        .timer-wrap {
+          padding: 8px 11px;
+        }
+        .qdisplay {
+          padding: 16px 11px;
+        }
+        .qt {
+          font-size: clamp(1.8rem, 10vw, 3rem);
+        }
+        .arow input {
+          font-size: 1rem;
+          padding: 10px 8px;
+        }
+        .arow .btn {
+          padding: 10px 13px;
+          font-size: 1.1rem;
+        }
+        .wheel-wrap {
+          width: min(230px, calc(100vw - 48px));
+          height: min(230px, calc(100vw - 48px));
+        }
+        .spin-hdr {
+          font-size: 1.6rem;
+        }
+        .wheel-arrow {
+          font-size: 1.7rem;
+          top: -13px;
+        }
+        .chosen-text {
+          font-size: 1rem;
+        }
+        .go-title {
+          font-size: 1.9rem;
+        }
+        .rrow {
+          padding: 8px 9px;
+          gap: 7px;
+        }
+        .rrow .rbadge {
+          font-size: 1.1rem;
+          width: 26px;
+        }
+        .rrow .rav {
+          font-size: 1.1rem;
+        }
+        .rrow .ravimg {
+          width: 28px;
+          height: 28px;
+        }
+        .rrow .rscore {
+          font-size: 0.74rem;
+          padding: 2px 7px;
+        }
+        #music-btn {
+          width: 44px;
+          height: 44px;
+          font-size: 1.15rem;
+          bottom: 14px;
+          right: 12px;
+        }
+        .room-card {
+          padding: 9px 10px;
+          gap: 8px;
+        }
+        .collapsible-panel {
+          padding: 13px;
+        }
+        .ps-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 360px) {
+        #app {
+          padding: 8px 8px 64px;
+          gap: 8px;
+        }
+        .logo {
+          font-size: clamp(1.8rem, 11vw, 2.5rem);
+        }
+        .logo-emoji-row {
+          font-size: 1.1rem;
+        }
+        .card {
+          padding: 13px 11px;
+          border-radius: var(--radm);
+        }
+        .btn {
+          padding: 9px 12px;
+          font-size: 0.76rem;
+        }
+        .btn-lg {
+          padding: 12px 15px;
+          font-size: 0.84rem;
+        }
+        .login-hero .big-emoji {
+          font-size: 2.3rem;
+        }
+        .login-hero h2 {
+          font-size: 1.2rem;
+        }
+        .tab-btn {
+          font-size: 0.7rem;
+          padding: 9px 5px;
+        }
+        .emoji-btn {
+          font-size: 1.3rem;
+          padding: 2px 4px;
+        }
+        .action-card {
+          padding: 12px 10px;
+          gap: 9px;
+        }
+        .ac-icon {
+          font-size: 1.7rem;
+        }
+        .ac-body .ac-title {
+          font-size: 0.95rem;
+        }
+        .join-code-inp {
+          font-size: 1.1rem !important;
+          letter-spacing: 3px !important;
+        }
+        .opt-pill {
+          padding: 5px 8px;
+          font-size: 0.68rem;
+        }
+        .rc-code {
+          font-size: clamp(1.1rem, 8vw, 1.7rem);
+        }
+        .pg {
+          grid-template-columns: 1fr;
+        }
+        .ps-grid {
+          grid-template-columns: 1fr;
+        }
+        .game-topbar {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 4px;
+        }
+        .gtb-left,
+        .gtb-right {
+          min-width: 45px;
+        }
+        .qt {
+          font-size: clamp(1.6rem, 12vw, 2.5rem);
+        }
+        .arow input {
+          font-size: 0.95rem;
+        }
+        .wheel-wrap {
+          width: min(190px, calc(100vw - 40px));
+          height: min(190px, calc(100vw - 40px));
+        }
+        #music-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 1rem;
+          bottom: 10px;
+          right: 8px;
+        }
+      }
+      @media (max-height: 500px) and (orientation: landscape) {
+        .logo-section {
+          display: none;
+        }
+        #app {
+          padding: 7px 12px 56px;
+          gap: 7px;
+        }
+        .sec {
+          max-width: 600px;
+        }
+        .qdisplay {
+          padding: 12px;
+        }
+        .chatbox {
+          height: 65px;
+        }
+        .wheel-wrap {
+          width: min(180px, calc(100vh - 80px));
+          height: min(180px, calc(100vh - 80px));
+        }
+      }
+      @media (min-width: 481px) and (max-width: 768px) {
+        .sec {
+          max-width: 480px;
+        }
+        .wheel-wrap {
+          width: 300px;
+          height: 300px;
+        }
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .btn:hover,
+        .action-card:hover,
+        .room-card:hover {
+          transform: none;
+          box-shadow: var(--shs);
+        }
+        .emoji-btn:hover:not(.sel) {
+          transform: none;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+          transform: none;
+        }
+      }
+      @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        #app {
+          padding-bottom: calc(70px + env(safe-area-inset-bottom));
+        }
+        #music-btn {
+          bottom: calc(16px + env(safe-area-inset-bottom));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="countdown-overlay">
+      <div class="countdown-num" id="countdown-num">3</div>
+      <div class="countdown-label">BERSIAP...</div>
+    </div>
+    <div id="toast-container"></div>
+    <div id="app">
+      <div class="logo-section">
+        <div class="logo-emoji-row">🎯 ⚡ 🧮 ⚡ 🎯</div>
+        <div class="logo">MathArena!</div>
+        <div class="tagline">Real-time Multiplayer Math Quiz 🔥</div>
+      </div>
+      <!-- LOGIN -->
+      <div id="sec-login" class="sec on">
+        <div class="card">
+          <div class="login-hero">
+            <span class="big-emoji">🧮</span>
+            <h2>Masuk ke Arena!</h2>
+            <p>
+              Jawab soal tercepat, menang hadiah.<br />Gagal? Terima hukuman
+              konyol! 😈
+            </p>
+          </div>
+          <div class="tab-row">
+            <button
+              class="tab-btn active"
+              id="tab-google"
+              onclick="switchTab('google')"
+            >
+              🔵 Google</button
+            ><button
+              class="tab-btn"
+              id="tab-guest"
+              onclick="switchTab('guest')"
+            >
+              👤 Guest
+            </button>
+          </div>
+          <div class="tab-pane on" id="pane-google">
+            <p
+              style="
+                text-align: center;
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: var(--ink2);
+                margin-bottom: 13px;
+                line-height: 1.7;
+              "
+            >
+              Login dengan akun Google.<br />Nama & foto profil akan dipakai.
+            </p>
+            <button class="btn btn-w btn-fw btn-lg" onclick="loginGoogle()">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                /></svg
+              >Lanjutkan dengan Google
+            </button>
+          </div>
+          <div class="tab-pane" id="pane-guest">
+            <span class="lsm" style="text-align: center; display: block"
+              >Pilih Avatar Kamu</span
+            >
+            <div class="emoji-row" id="emoji-picker"></div>
+            <div style="margin-top: 10px">
+              <span class="lsm">Username (2–20 karakter)</span
+              ><input
+                type="text"
+                id="uname-input"
+                placeholder="Nama kamu..."
+                maxlength="20"
+                autocomplete="off"
+                onkeydown="if (event.key === 'Enter') loginGuest();"
+              />
+            </div>
+            <button
+              class="btn btn-g btn-fw btn-lg"
+              onclick="loginGuest()"
+              style="margin-top: 11px"
+            >
+              🎮 Masuk sebagai Guest!
+            </button>
+            <div
+              id="login-err"
+              style="
+                color: var(--r);
+                font-weight: 800;
+                font-size: 0.78rem;
+                text-align: center;
+                margin-top: 6px;
+                min-height: 18px;
+              "
+            ></div>
+          </div>
+        </div>
+        <p
+          style="
+            color: var(--ink2);
+            font-size: 0.66rem;
+            font-weight: 700;
+            opacity: 0.5;
+            text-align: center;
+          "
+        >
+          🔒 Data kamu aman &amp; tidak disimpan permanen
+        </p>
+      </div>
+      <!-- MENU -->
+      <div id="sec-menu" class="sec">
+        <div class="menu-top">
+          <div class="user-badge">
+            <div class="u-avwrap">
+              <span id="m-uav" class="u-av">🎮</span>
+              <div class="u-online"></div>
+            </div>
+            <span class="u-name-txt" id="m-uname">—</span>
+          </div>
+          <button class="btn btn-r btn-sm" onclick="doLogout()">
+            Logout 🚪
+          </button>
+        </div>
+        <div class="card">
+          <div
+            style="
+              font-family: var(--fh);
+              font-size: 1.2rem;
+              text-align: center;
+              margin-bottom: 12px;
+            "
+          >
+            🏠 Mau ngapain?
+          </div>
+          <div class="action-cards">
+            <button class="action-card create" onclick="goToCreate()">
+              <span class="ac-icon">🏗️</span>
+              <div class="ac-body">
+                <div class="ac-title">Buat Room Baru</div>
+                <div class="ac-sub">
+                  Jadi host, atur settings &amp; undang teman!
+                </div>
+              </div>
+              <span class="ac-arrow">→</span>
+            </button>
+            <button class="action-card join" onclick="togglePanel('join')">
+              <span class="ac-icon">🚪</span>
+              <div class="ac-body">
+                <div class="ac-title">Masuk dengan Kode</div>
+                <div class="ac-sub">Punya kode room? Langsung join!</div>
+              </div>
+              <span class="ac-arrow" id="join-arrow">↓</span>
+            </button>
+            <div class="collapsible-panel join-panel-inner" id="join-panel">
+              <span class="lsm" style="text-align: center"
+                >Kode Room (6 Karakter)</span
+              >
+              <input
+                type="text"
+                id="join-code"
+                class="join-code-inp"
+                placeholder="XXXXXX"
+                maxlength="6"
+                autocomplete="off"
+                onkeyup="
+                  this.value = this.value.toUpperCase();
+                  onJoinInput();
+                "
+                onkeydown="if (event.key === 'Enter') doJoin();"
+              />
+              <div class="pw-row" id="pw-row" style="display: none">
+                <div class="pw-label">🔒 Room Private — Masukkan Password</div>
+                <input
+                  type="password"
+                  id="join-pw"
+                  placeholder="Password room..."
+                  autocomplete="off"
+                  onkeydown="if (event.key === 'Enter') doJoin();"
+                />
+              </div>
+              <div class="join-fb" id="join-fb"></div>
+              <button
+                class="btn btn-b btn-fw"
+                id="join-btn"
+                onclick="doJoin()"
+                disabled
+              >
+                🚀 Masuk ke Room!
+              </button>
+            </div>
+            <button class="action-card browse" onclick="togglePanel('browse')">
+              <span class="ac-icon">🌐</span>
+              <div class="ac-body">
+                <div class="ac-title">Cari Room Publik</div>
+                <div class="ac-sub">
+                  Lihat room yang sedang menunggu pemain!
+                </div>
+              </div>
+              <span class="ac-arrow" id="browse-arrow">↓</span>
+            </button>
+            <div class="collapsible-panel browse-panel-inner" id="browse-panel">
+              <div class="browse-header">
+                <div class="browse-title">🌐 Room Publik</div>
+                <button
+                  class="btn btn-ghost btn-sm"
+                  onclick="loadPublicRooms()"
+                  id="browse-refresh"
+                >
+                  ↻ Refresh
+                </button>
+              </div>
+              <div id="browse-list">
+                <div class="browse-empty">
+                  <span class="be-icon">🔍</span>Klik Refresh untuk melihat room
+                  tersedia
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SETTINGS -->
+      <div id="sec-create" class="sec" style="max-width: 520px">
+        <button
+          class="btn btn-ghost btn-sm"
+          onclick="showSec('menu')"
+          style="align-self: flex-start"
+        >
+          ← Kembali
+        </button>
+        <div class="settings-header">
+          <div class="sh-title">⚙️ Atur Roommu</div>
+          <div class="sh-sub">Kamu adalah Host — atur sesuai keinginan!</div>
+        </div>
+        <div class="card">
+          <div class="settings-form">
+            <div class="sf-row">
+              <label>🎯 Tingkat Kesulitan</label>
+              <div class="opt-pills" id="diff-pills">
+                <button
+                  class="opt-pill diff-easy"
+                  data-val="easy"
+                  onclick="setDiff(this)"
+                >
+                  😊 Easy
+                </button>
+                <button
+                  class="opt-pill diff-medium sel"
+                  data-val="medium"
+                  onclick="setDiff(this)"
+                >
+                  😤 Medium
+                </button>
+                <button
+                  class="opt-pill diff-hard"
+                  data-val="hard"
+                  onclick="setDiff(this)"
+                >
+                  🔥 Hard
+                </button>
+                <button
+                  class="opt-pill diff-chaos"
+                  data-val="chaos"
+                  onclick="setDiff(this)"
+                >
+                  💀 CHAOS!
+                </button>
+              </div>
+              <div class="diff-desc" id="diff-desc">
+                Angka 5–80, operasi +, -, ×. Makin ke soal akhir makin susah!
+              </div>
+            </div>
+            <div class="sf-row">
+              <label>🔢 Operasi yang Dipakai</label>
+              <div class="opt-pills" id="op-pills">
+                <button
+                  class="opt-pill op sel"
+                  data-val="+"
+                  onclick="toggleOp(this)"
+                >
+                  ➕ Tambah
+                </button>
+                <button
+                  class="opt-pill op sel"
+                  data-val="-"
+                  onclick="toggleOp(this)"
+                >
+                  ➖ Kurang
+                </button>
+                <button
+                  class="opt-pill op sel"
+                  data-val="×"
+                  onclick="toggleOp(this)"
+                >
+                  ✖️ Kali
+                </button>
+                <button
+                  class="opt-pill op"
+                  data-val="÷"
+                  onclick="toggleOp(this)"
+                >
+                  ➗ Bagi
+                </button>
+              </div>
+            </div>
+            <div class="sf-row">
+              <label>📝 Jumlah Soal</label>
+              <div class="opt-pills" id="qcount-pills">
+                <button
+                  class="opt-pill q-count"
+                  data-val="5"
+                  onclick="setQCount(this)"
+                >
+                  5 soal
+                </button>
+                <button
+                  class="opt-pill q-count sel"
+                  data-val="10"
+                  onclick="setQCount(this)"
+                >
+                  10 soal
+                </button>
+                <button
+                  class="opt-pill q-count"
+                  data-val="15"
+                  onclick="setQCount(this)"
+                >
+                  15 soal
+                </button>
+                <button
+                  class="opt-pill q-count"
+                  data-val="20"
+                  onclick="setQCount(this)"
+                >
+                  20 soal
+                </button>
+              </div>
+            </div>
+            <div class="sf-row">
+              <label>⏱️ Waktu per Soal</label>
+              <div class="opt-pills" id="ttime-pills">
+                <button
+                  class="opt-pill t-time"
+                  data-val="10"
+                  onclick="setTTime(this)"
+                >
+                  10 detik
+                </button>
+                <button
+                  class="opt-pill t-time sel"
+                  data-val="15"
+                  onclick="setTTime(this)"
+                >
+                  15 detik
+                </button>
+                <button
+                  class="opt-pill t-time"
+                  data-val="20"
+                  onclick="setTTime(this)"
+                >
+                  20 detik
+                </button>
+                <button
+                  class="opt-pill t-time"
+                  data-val="30"
+                  onclick="setTTime(this)"
+                >
+                  30 detik
+                </button>
+              </div>
+            </div>
+            <div class="sf-row">
+              <label>📝 Waktu Input Hukuman</label>
+              <div class="opt-pills" id="ctime-pills">
+                <button
+                  class="opt-pill ct-time"
+                  data-val="30"
+                  onclick="setCTime(this)"
+                >
+                  30 detik
+                </button>
+                <button
+                  class="opt-pill ct-time sel"
+                  data-val="60"
+                  onclick="setCTime(this)"
+                >
+                  60 detik
+                </button>
+                <button
+                  class="opt-pill ct-time"
+                  data-val="90"
+                  onclick="setCTime(this)"
+                >
+                  90 detik
+                </button>
+              </div>
+            </div>
+            <div class="sf-row">
+              <div class="toggle-row">
+                <div class="tr-info">
+                  <div class="tr-title">🔥 Streak Bonus</div>
+                  <div class="tr-sub">
+                    Jawab benar berturut-turut → poin lebih banyak!
+                  </div>
+                </div>
+                <label class="toggle"
+                  ><input
+                    type="checkbox"
+                    id="streak-toggle"
+                    checked
+                    onchange="setStreak(this)" /><span
+                    class="toggle-slider"
+                  ></span
+                ></label>
+              </div>
+            </div>
+            <div class="sf-row">
+              <div class="toggle-row">
+                <div class="tr-info">
+                  <div class="tr-title">🔒 Private Room</div>
+                  <div class="tr-sub">Hanya yang punya password bisa join</div>
+                </div>
+                <label class="toggle"
+                  ><input
+                    type="checkbox"
+                    id="private-toggle"
+                    onchange="togglePrivate(this)" /><span
+                    class="toggle-slider"
+                  ></span
+                ></label>
+              </div>
+              <div class="pw-field" id="pw-field">
+                <div
+                  style="
+                    font-size: 0.7rem;
+                    font-weight: 900;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    color: var(--pk);
+                  "
+                >
+                  🔑 Password Room (maks 20 karakter)
+                </div>
+                <input
+                  type="text"
+                  id="room-pw"
+                  placeholder="Contoh: MANTAP123"
+                  maxlength="20"
+                  autocomplete="off"
+                  oninput="this.value = this.value.toUpperCase()"
+                />
+                <div
+                  style="
+                    font-size: 0.7rem;
+                    color: var(--ink2);
+                    font-weight: 700;
+                  "
+                >
+                  Bagikan password ini ke teman yang kamu izinkan masuk.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-navy btn-fw btn-lg"
+          onclick="doCreateRoom()"
+          id="create-btn"
+          style="max-width: 500px"
+        >
+          🚀 Buat Room &amp; Masuk Lobby!
+        </button>
+      </div>
+      <!-- LOBBY -->
+      <div id="sec-lobby" class="sec">
+        <div class="lobby-top">
+          <div class="user-badge">
+            <div class="u-avwrap">
+              <span id="u-av" class="u-av">🎮</span>
+              <div class="u-online"></div>
+            </div>
+            <span class="u-name-txt" id="u-name">—</span>
+          </div>
+          <div class="lobby-actions">
+            <div id="room-full-badge" style="display: none" class="full-badge">
+              ⛔ FULL
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="leaveRoom()">
+              Keluar 🚪
+            </button>
+          </div>
+        </div>
+        <div class="status-bar">
+          <div class="sdot" id="wsdot"></div>
+          <span id="wsstatus">Menghubungkan...</span>
+        </div>
+        <div class="card">
+          <div class="rc-box">
+            <div class="rc-lbl">🏠 Kode Room</div>
+            <div class="rc-code-row">
+              <div class="rc-code" id="rc-display">——————</div>
+              <button
+                class="rc-copy-btn"
+                id="rc-copy-btn"
+                onclick="copyRoomCode()"
+              >
+                📋 Salin
+              </button>
+            </div>
+            <div class="rc-hint">Bagikan kode ini ke teman-temanmu!</div>
+            <div id="rc-private-badge" style="display: none">
+              <div class="rc-private-badge">🔒 Room Private</div>
+            </div>
+          </div>
+          <div style="margin-top: 11px">
+            <span class="lsm">⚙️ Pengaturan Room</span>
+            <div
+              class="settings-chips"
+              id="settings-chips"
+              style="margin-top: 5px"
+            ></div>
+          </div>
+          <div class="wi-strip" id="wi-strip" style="margin-top: 11px">
+            <div class="wi-chip win">
+              <span class="wic-n" id="wi-wn">—</span><span>🏆 Juara</span
+              ><span class="wic-lbl">menang</span>
+            </div>
+            <div class="wi-chip lose">
+              <span class="wic-n" id="wi-ln">—</span><span>💀 Kalah</span
+              ><span class="wic-lbl">kena hukuman</span>
+            </div>
+          </div>
+          <div class="fdiv" style="margin-top: 13px">✦ PEMAIN ✦</div>
+          <div style="margin-top: 9px">
+            <span class="lsm">👥 Pemain (<span id="pcount">0</span>/10)</span>
+            <div class="pg" id="pgrid" style="margin-top: 5px"></div>
+          </div>
+          <div class="fdiv" style="margin-top: 13px">✦ OBROLAN ✦</div>
+          <div style="margin-top: 9px">
+            <div class="chatbox" id="chatbox"></div>
+            <div class="ci">
+              <input
+                type="text"
+                id="ci-input"
+                placeholder="Ngobrol dulu... 💬"
+                maxlength="200"
+                autocomplete="off"
+                onkeydown="if (event.key === 'Enter') sendChat();"
+              /><button class="btn btn-y btn-sm" onclick="sendChat()">→</button>
+            </div>
+          </div>
+          <div style="margin-top: 12px">
+            <button
+              class="btn btn-g btn-fw btn-lg"
+              id="start-btn"
+              onclick="startGame()"
+              style="display: none"
+            >
+              📝 Mulai Kumpulkan Hukuman!
+            </button>
+            <div class="wait-msg" id="lobby-wait" style="display: none">
+              ⏳ Menunggu host memulai sesi...
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- COLLECTING -->
+      <div id="sec-collecting" class="sec" style="max-width: 520px">
+        <div class="col-header">
+          <div class="col-title">📝 Input Hukuman!</div>
+          <div class="col-sub" id="col-sub">
+            Semua peserta wajib mengisi hukuman sebelum game dimulai
+          </div>
+        </div>
+        <div class="card">
+          <span class="lsm"
+            >Progress (<span id="col-done">0</span>/<span id="col-total"
+              >0</span
+            >
+            sudah isi)</span
+          >
+          <div class="pbwrap" style="margin-top: 5px">
+            <div class="pb" id="col-pb" style="width: 0%"></div>
+          </div>
+          <div style="margin-top: 11px">
+            <span class="lsm">Status Peserta</span>
+            <div class="ps-grid" id="submit-grid" style="margin-top: 5px"></div>
+          </div>
+          <div class="pi-box" id="pi-box" style="margin-top: 11px">
+            <div class="pi-title">✍️ Masukkan Hukumanmu!</div>
+            <p class="pi-hint">
+              Hukumanmu masuk ke <strong>spin wheel</strong>.<br />1 hukuman
+              terpilih berlaku untuk <strong>semua yang kalah</strong>! 😈
+            </p>
+            <div class="pi-textarea-wrap">
+              <textarea
+                id="punch-txt"
+                placeholder="Contoh: Joget TikTok 30 detik di depan semua orang!"
+                maxlength="200"
+                rows="4"
+                oninput="updateCharCount(this)"
+              ></textarea>
+              <div class="pi-charcount">
+                <span id="punch-count">0</span>/200
+              </div>
+            </div>
+            <button
+              class="btn btn-r btn-fw"
+              id="col-sub-btn"
+              onclick="submitPunishment()"
+              style="margin-top: 11px"
+            >
+              😈 Kirim Hukuman!
+            </button>
+          </div>
+          <div
+            class="pi-box done-box"
+            id="pi-done-box"
+            style="display: none; margin-top: 11px"
+          >
+            <div class="pi-done-title">✅ Hukumanmu Terkirim!</div>
+            <p class="pi-hint" style="margin-top: 6px">
+              Menunggu peserta lain mengisi hukuman mereka...
+            </p>
+            <div class="pi-preview" id="pi-preview">—</div>
+          </div>
+        </div>
+        <div class="col-timer">Auto-start dalam <b id="col-timer">60</b>s</div>
+      </div>
+      <!-- GAME -->
+      <div id="sec-game" class="sec" style="max-width: 520px">
+        <div class="game-topbar">
+          <div class="gtb-left">
+            <div class="gtb-num" id="qprog">1/10</div>
+            <div class="gtb-lbl">Soal</div>
+          </div>
+          <div class="gtb-center">⚡ ARENA ⚡</div>
+          <div class="gtb-right">
+            <div class="gtb-num" id="g-diff">MEDIUM</div>
+            <div class="gtb-lbl">Difficulty</div>
+          </div>
+        </div>
+        <div class="timer-wrap">
+          <div class="timer-top">
+            <div
+              style="
+                font-size: 0.68rem;
+                font-weight: 900;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                color: var(--ink2);
+              "
+            >
+              ⏱️ Waktu
+            </div>
+            <div class="timer-badge" id="tbadge">15s</div>
+          </div>
+          <div class="tbar-bg"><div class="tbar" id="tbar"></div></div>
+        </div>
+        <div class="qdisplay">
+          <div class="ql">Soal Matematika</div>
+          <div class="qt" id="qtxt">? = ?</div>
+        </div>
+        <div class="arow">
+          <input
+            type="number"
+            id="ans-input"
+            placeholder="Jawaban kamu..."
+            inputmode="numeric"
+            onkeydown="if (event.key === 'Enter') submitAnswer();"
+          /><button
+            class="btn btn-p"
+            id="ans-btn"
+            onclick="submitAnswer()"
+            style="flex-shrink: 0; font-size: 1.2rem; padding: 11px 16px"
+          >
+            ✓
+          </button>
+        </div>
+        <div class="afb" id="afb"></div>
+        <div class="livesc" style="width: 100%">
+          <div class="ls-header">
+            <div class="ls-t">🏆 Live Scoreboard</div>
+            <div class="ls-danger" id="ls-danger"></div>
+          </div>
+          <div id="lslist"></div>
+        </div>
+      </div>
+      <!-- SPIN -->
+      <div id="sec-spin" class="sec" style="max-width: 520px">
+        <div class="spin-hdr">🎡 Spin Wheel!</div>
+        <div class="spin-sub" style="margin-bottom: 10px">
+          Satu hukuman terpilih untuk semua yang kalah!
+        </div>
+        <div class="wheel-wrap" id="wheel-wrap">
+          <div class="wheel-arrow">👇</div>
+          <canvas id="spinCanvas"></canvas>
+        </div>
+        <div class="spin-wait" id="spin-wait">🌀 Sedang berputar...</div>
+        <div class="chosen-box" id="chosen-box" style="display: none">
+          <div class="chosen-lbl">🎉 HUKUMAN TERPILIH!</div>
+          <div class="chosen-text" id="chosen-text">—</div>
+        </div>
+        <div class="group-box win-box" id="win-group" style="display: none">
+          <div class="gt" style="color: var(--o)">🏆 Para Juara!</div>
+          <div class="pchips" id="win-chips"></div>
+        </div>
+        <div class="group-box lose-box" id="lose-group" style="display: none">
+          <div class="gt" style="color: var(--r)">💀 Yang Kena Hukuman</div>
+          <div class="pchips" id="lose-chips"></div>
+        </div>
+      </div>
+      <!-- GAME OVER -->
+      <div id="sec-gameover" class="sec" style="max-width: 520px">
+        <div class="go-hero">
+          <div class="go-title">🎉 SELESAI!</div>
+          <div class="go-sub">Siapa juara &amp; siapa yang kena hukuman?</div>
+        </div>
+        <div class="punish-banner" id="punish-banner" style="display: none">
+          <div class="pb-lbl">💀 Hukuman untuk Semua yang Kalah</div>
+          <div class="pb-txt" id="punish-txt">—</div>
+        </div>
+        <div class="results-list" id="results-list"></div>
+        <button
+          class="btn btn-b btn-fw btn-lg"
+          id="play-again-btn"
+          onclick="requestReset()"
+          style="display: none; max-width: 500px"
+        >
+          🔄 Main Lagi!
+        </button>
+        <div
+          class="wait-msg"
+          id="play-again-wait"
+          style="display: none; max-width: 500px"
+        >
+          ⏳ Menunggu host reset game...
+        </div>
+        <button
+          class="btn btn-ghost btn-fw"
+          onclick="backToMenu()"
+          style="max-width: 500px"
+        >
+          🏠 Kembali ke Menu
+        </button>
+      </div>
+    </div>
+    <button id="music-btn" onclick="toggleMusic()" title="Toggle Musik">
+      🎵
+    </button>
+
+    <script>
+      const EMOJIS = [
+        "🎮",
+        "🐱",
+        "🐶",
+        "🦊",
+        "🐸",
+        "🐼",
+        "🐨",
+        "🦁",
+        "🐯",
+        "🐺",
+        "🦄",
+        "🐉",
+        "🚀",
+        "⚡",
+        "🌈",
+        "🍕",
+        "🍦",
+        "🎸",
+        "👾",
+        "🤖",
+        "🦸",
+        "🧙",
+        "🐧",
+        "🦋",
+        "🌟",
+      ];
+      let selEmoji = "🎮";
+      function initEmojiPicker() {
+        const row = document.getElementById("emoji-picker");
+        EMOJIS.forEach((e) => {
+          const b = document.createElement("button");
+          b.className = "emoji-btn" + (e === selEmoji ? " sel" : "");
+          b.textContent = e;
+          b.type = "button";
+          b.onclick = () => {
+            document
+              .querySelectorAll(".emoji-btn")
+              .forEach((x) => x.classList.remove("sel"));
+            b.classList.add("sel");
+            selEmoji = e;
+          };
+          row.appendChild(b);
+        });
+      }
+      const SETTINGS = {
+        difficulty: "medium",
+        operators: ["+", "-", "×"],
+        totalQuestions: 10,
+        timePerQuestion: 15,
+        collectTime: 60,
+        showStreak: true,
+        isPrivate: false,
+        password: "",
+      };
+      const DIFF_DESC = {
+        easy: "Angka kecil (1–30), hanya ➕➖. Cocok untuk pemula!",
+        medium: "Angka 5–80, operasi ➕➖✖️. Makin ke akhir makin susah!",
+        hard: "Angka besar, semua operasi + soal bertingkat di babak akhir. Siap puyeng!",
+        chaos:
+          "Angka 10–300, soal bertingkat sejak awal, acak banget. MENTAL BAJA DIPERLUKAN! 💀",
+      };
+      function setDiff(btn) {
+        document
+          .querySelectorAll("#diff-pills .opt-pill")
+          .forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        SETTINGS.difficulty = btn.dataset.val;
+        document.getElementById("diff-desc").textContent =
+          DIFF_DESC[btn.dataset.val] || "";
+      }
+      function toggleOp(btn) {
+        const active = document.querySelectorAll("#op-pills .opt-pill.sel");
+        if (btn.classList.contains("sel") && active.length <= 1) return;
+        btn.classList.toggle("sel");
+        SETTINGS.operators = [
+          ...document.querySelectorAll("#op-pills .opt-pill.sel"),
+        ].map((b) => b.dataset.val);
+      }
+      function setQCount(btn) {
+        document
+          .querySelectorAll("#qcount-pills .opt-pill")
+          .forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        SETTINGS.totalQuestions = parseInt(btn.dataset.val);
+      }
+      function setTTime(btn) {
+        document
+          .querySelectorAll("#ttime-pills .opt-pill")
+          .forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        SETTINGS.timePerQuestion = parseInt(btn.dataset.val);
+      }
+      function setCTime(btn) {
+        document
+          .querySelectorAll("#ctime-pills .opt-pill")
+          .forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        SETTINGS.collectTime = parseInt(btn.dataset.val);
+      }
+      function setStreak(cb) {
+        SETTINGS.showStreak = cb.checked;
+      }
+      function togglePrivate(cb) {
+        SETTINGS.isPrivate = cb.checked;
+        document.getElementById("pw-field").classList.toggle("on", cb.checked);
+      }
+      const S = {
+        token: null,
+        user: null,
+        ws: null,
+        roomCode: null,
+        isHost: false,
+        timerInt: null,
+        timerEnd: null,
+        timeLimitMs: 15000,
+        answered: false,
+        colTimerInt: null,
+        punishmentSubmitted: false,
+        winnerCount: 3,
+        allPlayers: [],
+        gameSettings: {},
+        wsReconnectAttempts: 0,
+        wsReconnectTimer: null,
+      };
+      window.addEventListener("DOMContentLoaded", async () => {
+        initEmojiPicker();
+        const p = new URLSearchParams(window.location.search);
+        const googleToken = p.get("token");
+        if (googleToken) {
+          // Callback dari Google OAuth — simpan token lalu auto-login langsung ke menu
+          localStorage.setItem("ma_token", googleToken);
+          window.history.replaceState({}, "", "/");
+          try {
+            const res = await fetch("/auth/me", {
+              headers: { Authorization: `Bearer ${googleToken}` },
+            });
+            if (res.ok) {
+              const d = await res.json();
+              S.token = googleToken;
+              S.user = d.user;
+              showSec("menu");
+              fillUserUI();
+              setTimeout(() => playTrack("menu"), 300);
+              return;
+            } else {
+              localStorage.removeItem("ma_token");
+            }
+          } catch {}
+        }
+        // Kunjungan biasa — selalu tampilkan halaman login terlebih dahulu
+        showSec("login");
+      });
+      function showSec(n) {
+        document
+          .querySelectorAll(".sec")
+          .forEach((s) => s.classList.remove("on"));
+        const el = document.getElementById("sec-" + n);
+        if (el) el.classList.add("on");
+      }
+      function switchTab(t) {
+        ["google", "guest"].forEach((x) => {
+          document
+            .getElementById("tab-" + x)
+            .classList.toggle("active", x === t);
+          document.getElementById("pane-" + x).classList.toggle("on", x === t);
+        });
+      }
+      function loginGoogle() {
+        window.location.href = "/auth/google";
+      }
+      async function loginGuest() {
+        const username = document.getElementById("uname-input").value.trim();
+        const err = document.getElementById("login-err");
+        err.textContent = "";
+        if (!username || username.length < 2) {
+          err.textContent = "Username minimal 2 karakter!";
+          return;
+        }
+        if (username.length > 20) {
+          err.textContent = "Username maksimal 20 karakter!";
+          return;
+        }
+        if (!/^[a-zA-Z0-9 _\-]+$/.test(username)) {
+          err.textContent = "Hanya huruf, angka, spasi, _ atau -!";
+          return;
+        }
+        try {
+          const res = await fetch("/auth/guest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, avatar: selEmoji }),
+          });
+          const d = await res.json();
+          if (!res.ok) {
+            err.textContent = d.error || "Gagal login";
+            return;
+          }
+          localStorage.setItem("ma_token", d.token);
+          S.token = d.token;
+          S.user = d.user;
+          showSec("menu");
+          fillUserUI();
+          setTimeout(() => playTrack("menu"), 300);
+        } catch {
+          err.textContent = "Server tidak bisa dihubungi 😢";
+        }
+      }
+      function doLogout() {
+        if (S.ws) {
+          try {
+            S.ws.close();
+          } catch {}
+          S.ws = null;
+        }
+        stopTimer();
+        stopColTimer();
+        clearReconnect();
+        localStorage.removeItem("ma_token");
+        Object.assign(S, {
+          token: null,
+          user: null,
+          roomCode: null,
+          isHost: false,
+          answered: false,
+          punishmentSubmitted: false,
+          allPlayers: [],
+          gameSettings: {},
+        });
+        showSec("login");
+        musicStop();
+      }
+      function fillUserUI() {
+        if (!S.user) return;
+        ["m-uname", "u-name"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = S.user.name;
+        });
+        ["m-uav", "u-av"].forEach((id) => {
+          let el = document.getElementById(id);
+          if (!el) return;
+          if (S.user.avatar?.startsWith("http")) {
+            const img = document.createElement("img");
+            img.className = "u-avimg";
+            img.src = esc(S.user.avatar);
+            img.alt = "av";
+            img.id = id;
+            img.onerror = () => {
+              const sp = document.createElement("span");
+              sp.className = "u-av";
+              sp.textContent = "🎮";
+              sp.id = id;
+              img.replaceWith(sp);
+            };
+            el.replaceWith(img);
+          } else {
+            el.textContent = S.user.avatar || "🎮";
+          }
+        });
+      }
+      function setWsStatus(s) {
+        const dot = document.getElementById("wsdot"),
+          txt = document.getElementById("wsstatus");
+        if (dot)
+          dot.className =
+            "sdot" +
+            (s === "connected" ? " on" : s === "disconnected" ? " off" : "");
+        if (txt)
+          txt.textContent =
+            s === "connected"
+              ? "🟢 Terhubung!"
+              : s === "disconnected"
+                ? "🔴 Terputus"
+                : "⏳ Menghubungkan...";
+      }
+      function toast(msg, type = "", dur = 3000) {
+        const c = document.getElementById("toast-container");
+        if (!c) return;
+        const t = document.createElement("div");
+        t.className = "toast" + (type ? " " + type : "");
+        t.textContent = msg;
+        c.appendChild(t);
+        setTimeout(() => {
+          t.style.opacity = "0";
+          t.style.transition = "all .3s";
+          setTimeout(() => t.remove(), 300);
+        }, dur);
+      }
+      function addChat(sender, msg, sys = false) {
+        const box = document.getElementById("chatbox");
+        if (!box) return;
+        const d = document.createElement("div");
+        d.className = "cm";
+        d.innerHTML = sys
+          ? `<span class="csys">💬 ${esc(msg)}</span>`
+          : `<span class="csender">${esc(sender)}:</span><span style="color:var(--ink);flex:1"> ${esc(msg)}</span>`;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+      }
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+      function renderAv(av, size = 24) {
+        if (!av)
+          return `<span class="pav" style="font-size:${Math.round(size * 0.05)}rem;flex-shrink:0">🎮</span>`;
+        if (av.startsWith("http"))
+          return `<img class="pavimg" src="${esc(av)}" alt="" style="width:${size}px;height:${size}px;border-radius:50%;border:2px solid var(--ink);object-fit:cover;flex-shrink:0" onerror="this.style.display='none'">`;
+        return `<span class="pav" style="font-size:${Math.round(size * 0.048)}rem;flex-shrink:0">${esc(av)}</span>`;
+      }
+      function renderSettingsChips(settings) {
+        const chips = document.getElementById("settings-chips");
+        if (!chips || !settings) return;
+        chips.innerHTML = "";
+        const diffCls = {
+          easy: "diff-easy",
+          medium: "diff-medium",
+          hard: "diff-hard",
+          chaos: "diff-chaos",
+        };
+        const diffIcon = { easy: "😊", medium: "😤", hard: "🔥", chaos: "💀" };
+        const mk = (txt, cls) => {
+          const c = document.createElement("span");
+          c.className = `sch ${cls}`;
+          c.textContent = txt;
+          chips.appendChild(c);
+        };
+        mk(
+          `${diffIcon[settings.difficulty] || "❓"} ${(settings.difficulty || "medium").toUpperCase()}`,
+          diffCls[settings.difficulty] || "",
+        );
+        mk(`📝 ${settings.totalQuestions || 10} soal`, "blue");
+        mk(`⏱️ ${settings.timePerQuestion || 15}s/soal`, "orange");
+        if (settings.showStreak) mk("🔥 Streak", "green");
+        if (settings.isPrivate) mk("🔒 Private", "");
+      }
+      async function copyRoomCode() {
+        const code = document.getElementById("rc-display")?.textContent;
+        if (!code || code.includes("—")) return;
+        try {
+          await navigator.clipboard.writeText(code);
+          const btn = document.getElementById("rc-copy-btn");
+          if (btn) {
+            btn.textContent = "✅ Tersalin!";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.textContent = "📋 Salin";
+              btn.classList.remove("copied");
+            }, 2000);
+          }
+          toast("Kode tersalin! 📋", "ok", 2000);
+        } catch {
+          toast("Gagal salin 😢", "err");
+        }
+      }
+      function safeSet(id, prop, val) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const parts = prop.split(".");
+        let cur = el;
+        for (let i = 0; i < parts.length - 1; i++) cur = cur[parts[i]];
+        cur[parts[parts.length - 1]] = val;
+      }
+      /* PANEL TOGGLE */
+      function togglePanel(name) {
+        const ids = { join: "join-panel", browse: "browse-panel" };
+        const arrs = { join: "join-arrow", browse: "browse-arrow" };
+        const other = { join: "browse", browse: "join" };
+        const panel = document.getElementById(ids[name]);
+        if (!panel) return;
+        const isOpen = panel.classList.contains("on");
+        const otherPanel = document.getElementById(ids[other[name]]);
+        if (otherPanel) otherPanel.classList.remove("on");
+        const otherArrow = document.getElementById(arrs[other[name]]);
+        if (otherArrow) otherArrow.textContent = "↓";
+        panel.classList.toggle("on", !isOpen);
+        const arrow = document.getElementById(arrs[name]);
+        if (arrow) arrow.textContent = isOpen ? "↓" : "↑";
+        if (name === "browse" && !isOpen) loadPublicRooms();
+        if (name === "join" && !isOpen)
+          setTimeout(() => document.getElementById("join-code")?.focus(), 100);
+      }
+      /* BROWSE PUBLIC ROOMS */
+      async function loadPublicRooms() {
+        const list = document.getElementById("browse-list");
+        const btn = document.getElementById("browse-refresh");
+        if (btn) {
+          btn.textContent = "⏳";
+          btn.disabled = true;
+        }
+        if (list)
+          list.innerHTML =
+            '<div class="browse-empty"><span class="be-icon">⏳</span>Memuat room...</div>';
+        try {
+          const res = await fetch("/room/list");
+          if (!res.ok) throw new Error("failed");
+          const d = await res.json();
+          if (btn) {
+            btn.textContent = "↻ Refresh";
+            btn.disabled = false;
+          }
+          if (!d.rooms || d.rooms.length === 0) {
+            if (list)
+              list.innerHTML =
+                '<div class="browse-empty"><span class="be-icon">😴</span>Belum ada room publik.<br>Jadilah yang pertama buat room!</div>';
+            return;
+          }
+          if (!list) return;
+          list.innerHTML = "";
+          const diffCls = {
+            easy: "diff-easy",
+            medium: "diff-medium",
+            hard: "diff-hard",
+            chaos: "diff-chaos",
+          };
+          const diffEmoji = {
+            easy: "😊",
+            medium: "😤",
+            hard: "🔥",
+            chaos: "💀",
+          };
+          d.rooms.forEach((r, i) => {
+            const card = document.createElement("div");
+            card.className = "room-card";
+            card.style.animationDelay = i * 0.06 + "s";
+            const isUrl = r.hostAvatar?.startsWith("http");
+            const avHtml = isUrl
+              ? `<img src="${esc(r.hostAvatar)}" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);object-fit:cover" alt="av">`
+              : `<span style="font-size:1.5rem">${esc(r.hostAvatar || "🎮")}</span>`;
+            card.innerHTML = `
+        <div class="rc-av">${avHtml}</div>
+        <div class="rc-info">
+          <div class="rc-host">👑 ${esc(r.hostName)}</div>
+          <div class="rc-meta">
+            <span class="rc-chip ${diffCls[r.difficulty] || ""}">${diffEmoji[r.difficulty] || "😤"} ${(r.difficulty || "medium").toUpperCase()}</span>
+            <span class="rc-chip">📝 ${r.totalQuestions || 10} soal</span>
+            <span class="rc-chip">⏱️ ${r.timePerQuestion || 15}s</span>
+            ${r.showStreak ? '<span class="rc-chip">🔥 Streak</span>' : ""}
+          </div>
+        </div>
+        <div class="rc-right">
+          <div class="rc-players">${r.playerCount}</div>
+          <div class="rc-max">/10 pemain</div>
+          <button class="rc-join-btn" onclick="quickJoinRoom('${esc(r.code)}')">JOIN →</button>
+        </div>`;
+            list.appendChild(card);
+          });
+        } catch {
+          if (btn) {
+            btn.textContent = "↻ Refresh";
+            btn.disabled = false;
+          }
+          if (list)
+            list.innerHTML =
+              '<div class="browse-empty"><span class="be-icon">⚠️</span>Gagal memuat. Coba lagi!</div>';
+        }
+      }
+      function quickJoinRoom(code) {
+        connectWS(code, "");
+      }
+      /* JOIN */
+      let joinDebounce = null;
+      async function onJoinInput() {
+        const code =
+          document.getElementById("join-code")?.value.toUpperCase() || "";
+        const fb = document.getElementById("join-fb"),
+          btn = document.getElementById("join-btn"),
+          pwRow = document.getElementById("pw-row");
+        if (fb) {
+          fb.textContent = "";
+          fb.className = "join-fb";
+        }
+        if (btn) btn.disabled = true;
+        if (pwRow) pwRow.style.display = "none";
+        clearTimeout(joinDebounce);
+        if (code.length < 6) return;
+        if (fb) {
+          fb.textContent = "🔍 Mengecek room...";
+          fb.className = "join-fb info";
+        }
+        joinDebounce = setTimeout(async () => {
+          try {
+            const res = await fetch(`/room/check/${code}`);
+            if (res.status === 404) {
+              if (fb) {
+                fb.textContent = "❌ Room tidak ditemukan.";
+                fb.className = "join-fb err";
+              }
+              return;
+            }
+            const d = await res.json();
+            if (fb) {
+              fb.textContent = d.message;
+              fb.className = "join-fb " + (d.canJoin ? "ok" : "err");
+            }
+            if (d.canJoin) {
+              if (btn) btn.disabled = false;
+              if (pwRow) pwRow.style.display = d.isPrivate ? "flex" : "none";
+            }
+          } catch {
+            if (fb) {
+              fb.textContent = "⚠️ Tidak bisa cek server.";
+              fb.className = "join-fb err";
+            }
+          }
+        }, 450);
+      }
+      function doJoin() {
+        const code =
+          document.getElementById("join-code")?.value.trim().toUpperCase() ||
+          "";
+        const pw = document.getElementById("join-pw")?.value.trim() || "";
+        if (code.length < 6) {
+          toast("Kode room 6 karakter ya!", "warn");
+          return;
+        }
+        connectWS(code, pw);
+      }
+      /* CREATE */
+      function goToCreate() {
+        showSec("create");
+      }
+      async function doCreateRoom() {
+        if (SETTINGS.isPrivate) {
+          const pw = document.getElementById("room-pw")?.value.trim();
+          if (!pw || pw.length < 3) {
+            toast("Isi password room dulu! (min 3 karakter)", "warn");
+            return;
+          }
+          SETTINGS.password = pw;
+        } else {
+          SETTINGS.password = "";
+        }
+        const btn = document.getElementById("create-btn");
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "⏳ Membuat room...";
+        }
+        try {
+          const res = await fetch("/room/create", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${S.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ settings: { ...SETTINGS } }),
+          });
+          if (!res.ok) {
+            toast("Gagal membuat room. Coba lagi!", "err");
+            return;
+          }
+          const d = await res.json();
+          connectWS(d.roomCode, "");
+        } catch {
+          toast("Server tidak bisa dihubungi 😢", "err");
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "🚀 Buat Room & Masuk Lobby!";
+          }
+        }
+      }
+      /* WEBSOCKET */
+      function connectWS(roomCode, password = "") {
+        if (S.ws) {
+          try {
+            S.ws.close();
+          } catch {}
+          S.ws = null;
+        }
+        S.roomCode = roomCode;
+        S.wsReconnectAttempts = 0;
+        openWS(roomCode, password);
+      }
+      function openWS(roomCode, password = "") {
+        if (!S.token) return;
+        const url = `ws://${location.host}/ws?token=${encodeURIComponent(S.token)}&roomCode=${roomCode}&password=${encodeURIComponent(password)}`;
+        setWsStatus("connecting");
+        let ws;
+        try {
+          ws = new WebSocket(url);
+        } catch {
+          setWsStatus("disconnected");
+          toast("Gagal koneksi ke server 😢", "err");
+          return;
+        }
+        S.ws = ws;
+        ws.onopen = () => {
+          setWsStatus("connected");
+          S.wsReconnectAttempts = 0;
+          clearReconnect();
+        };
+        ws.onclose = (e) => {
+          S.ws = null;
+          setWsStatus("disconnected");
+          const hardErrors = {
+            4001: "Sesi tidak valid, silakan login ulang.",
+            4002: "⛔ Room penuh! Maks 10 pemain.",
+            4003: "🎮 Game sedang berlangsung. Tunggu selesai.",
+            4004: "❓ Room tidak ditemukan.",
+            4005: "🔒 Password salah! Room ini private.",
+            4000: "Kode room diperlukan.",
+          };
+          if (hardErrors[e.code]) {
+            toast(hardErrors[e.code], e.code === 4001 ? "err" : "warn");
+            if (e.code === 4001) doLogout();
+            return;
+          }
+          if (S.roomCode && S.token && S.wsReconnectAttempts < 3) {
+            S.wsReconnectAttempts++;
+            const delay = Math.min(2000 * S.wsReconnectAttempts, 6000);
+            toast(
+              `Koneksi terputus. Mencoba ulang (${S.wsReconnectAttempts}/3)...`,
+              "warn",
+              delay,
+            );
+            S.wsReconnectTimer = setTimeout(
+              () => openWS(roomCode, password),
+              delay,
+            );
+          }
+        };
+        ws.onerror = () => setWsStatus("disconnected");
+        ws.onmessage = (e) => {
+          try {
+            handleMsg(JSON.parse(e.data));
+          } catch (err) {
+            console.error("[WS parse]", err);
+          }
+        };
+      }
+      function clearReconnect() {
+        if (S.wsReconnectTimer) {
+          clearTimeout(S.wsReconnectTimer);
+          S.wsReconnectTimer = null;
+        }
+      }
+      function leaveRoom() {
+        clearReconnect();
+        if (S.ws) {
+          try {
+            S.ws.close();
+          } catch {}
+          S.ws = null;
+        }
+        S.roomCode = null;
+        S.isHost = false;
+        stopTimer();
+        stopColTimer();
+        const cb = document.getElementById("chatbox");
+        if (cb) cb.innerHTML = "";
+        showSec("menu");
+        fillUserUI();
+        setTimeout(() => playTrack("menu"), 300);
+      }
+      function backToMenu() {
+        clearReconnect();
+        if (S.ws) {
+          try {
+            S.ws.close();
+          } catch {}
+          S.ws = null;
+        }
+        S.roomCode = null;
+        S.isHost = false;
+        stopTimer();
+        stopColTimer();
+        musicStop();
+        resetClientState();
+        showSec("menu");
+        fillUserUI();
+        setTimeout(() => playTrack("menu"), 300);
+      }
+      function sendChat() {
+        const inp = document.getElementById("ci-input");
+        if (!inp) return;
+        const msg = inp.value.trim();
+        if (!msg) return;
+        sendWS({ type: "CHAT", message: msg });
+        inp.value = "";
+      }
+      function sendWS(d) {
+        if (S.ws?.readyState === WebSocket.OPEN)
+          try {
+            S.ws.send(JSON.stringify(d));
+          } catch (e) {
+            console.error("[WS send]", e);
+          }
+      }
+      /* MESSAGE HANDLER */
+      function handleMsg(msg) {
+        switch (msg.type) {
+          case "JOINED":
+            S.roomCode = msg.roomCode;
+            S.isHost = msg.isHost;
+            S.winnerCount = msg.winnerCount || 3;
+            S.gameSettings = msg.settings || {};
+            safeSet("rc-display", "textContent", msg.roomCode);
+            safeSet(
+              "rc-private-badge",
+              "style.display",
+              msg.settings?.isPrivate ? "block" : "none",
+            );
+            safeSet(
+              "start-btn",
+              "style.display",
+              msg.isHost ? "block" : "none",
+            );
+            safeSet(
+              "lobby-wait",
+              "style.display",
+              msg.isHost ? "none" : "block",
+            );
+            addChat("", `Bergabung ke room ${msg.roomCode} 🎉`, true);
+            fillUserUI();
+            renderSettingsChips(msg.settings);
+            showSec("lobby");
+            break;
+          case "LOBBY_UPDATE":
+            S.allPlayers = msg.players || [];
+            renderLobby(
+              msg.players,
+              msg.winnerCount,
+              msg.loserCount,
+              msg.roomIsFull,
+              msg.settings,
+            );
+            break;
+          case "SETTINGS_UPDATED":
+            S.gameSettings = msg.settings;
+            renderSettingsChips(msg.settings);
+            addChat("", "⚙️ Host memperbarui pengaturan!", true);
+            break;
+          case "CHAT":
+            addChat(msg.sender, msg.message);
+            break;
+          case "PROMOTED_TO_HOST":
+            S.isHost = true;
+            safeSet("start-btn", "style.display", "block");
+            safeSet("lobby-wait", "style.display", "none");
+            addChat("", "👑 " + msg.message, true);
+            toast("👑 Kamu sekarang jadi Host!", "ok");
+            break;
+          case "COLLECT_PUNISHMENTS":
+            S.punishmentSubmitted = false;
+            showSec("collecting");
+            setupCollecting(msg);
+            break;
+          case "PUNISHMENT_PROGRESS":
+            updateColProgress(msg.submitted, msg.total);
+            break;
+          case "PUNISHMENT_SUBMITTED":
+          case "PUNISHMENT_AUTO_FILLED":
+            S.punishmentSubmitted = true;
+            safeSet("pi-box", "style.display", "none");
+            safeSet("pi-done-box", "style.display", "block");
+            safeSet("pi-preview", "textContent", msg.punishment || "—");
+            if (msg.type === "PUNISHMENT_AUTO_FILLED")
+              toast("⏰ Waktu habis! Hukuman default ditambahkan.", "warn");
+            break;
+          case "GAME_STARTING":
+            stopColTimer();
+            S.winnerCount = msg.winnerCount || 3;
+            S.gameSettings = msg;
+            safeSet(
+              "g-diff",
+              "textContent",
+              (msg.difficulty || "medium").toUpperCase(),
+            );
+            addChat("", "🚀 Semua hukuman terkumpul! Game dimulai!", true);
+            safeSet("lslist", "innerHTML", "");
+            const ld = document.getElementById("ls-danger");
+            if (ld)
+              ld.textContent =
+                msg.winnerCount > 0 ? `Top ${msg.winnerCount} = Juara` : "";
+            startCountdown(3, () => {
+              showSec("game");
+              playTrack("game");
+            });
+            break;
+          case "NEW_QUESTION":
+            S.answered = false;
+            S.timeLimitMs = msg.timeLimit;
+            S.timerEnd = Date.now() + msg.timeLimit;
+            showQuestion(msg);
+            startTimer(msg.timeLimit);
+            break;
+          case "ANSWER_RESULT":
+            showAFB(msg);
+            if (msg.correct) {
+              spawnReaction("🎉");
+              if (msg.streak > 1) spawnReaction("🔥");
+              if (msg.streak >= 5)
+                toast(`🔥 ${msg.streak}× STREAK! Luar biasa!`, "ok");
+            }
+            if (msg.correct || msg.message?.toLowerCase().includes("sudah")) {
+              safeSet("ans-input", "disabled", true);
+              safeSet("ans-btn", "disabled", true);
+            }
+            break;
+          case "PLAYER_ANSWERED":
+            addChat(
+              "",
+              `${msg.playerName} menjawab benar!${msg.streak > 1 ? " 🔥" + msg.streak + "×" : ""} 🎯`,
+              true,
+            );
+            break;
+          case "SCORE_UPDATE":
+            renderLiveScores(msg.scores);
+            break;
+          case "QUESTION_TIMEOUT":
+            stopTimer();
+            if (!S.answered) {
+              const fb = document.getElementById("afb");
+              if (fb) {
+                fb.textContent = `⏰ Waktu habis! Jawaban: ${msg.correctAnswer}`;
+                fb.className = "afb no";
+              }
+            }
+            renderLiveScores(msg.scores);
+            safeSet("ans-input", "disabled", true);
+            safeSet("ans-btn", "disabled", true);
+            break;
+          case "SPIN_WHEEL":
+            stopTimer();
+            musicStop();
+            showSec("spin");
+            runSpin(
+              msg.punishmentPool,
+              msg.chosenPunishment,
+              msg.winners,
+              msg.losers,
+              msg.spinDurationMs,
+            );
+            break;
+          case "GAME_OVER":
+            showSec("gameover");
+            renderGameOver(msg.results);
+            setTimeout(() => playTrack("menu"), 1000);
+            break;
+          case "GAME_RESET":
+            addChat("", msg.message, true);
+            S.punishmentSubmitted = false;
+            showSec("lobby");
+            fillUserUI();
+            resetClientState();
+            playTrack("menu");
+            break;
+          case "ERROR":
+            toast("❌ " + msg.message, "err");
+            break;
+        }
+      }
+      /* LOBBY */
+      function renderLobby(players, wc, lc, full, settings) {
+        const n = players?.length || 0;
+        safeSet("pcount", "textContent", n);
+        safeSet(
+          "room-full-badge",
+          "style.display",
+          full || n >= 10 ? "flex" : "none",
+        );
+        const wr = wc ?? S.winnerCount ?? 3;
+        safeSet("wi-wn", "textContent", wr);
+        safeSet("wi-ln", "textContent", lc ?? Math.max(0, n - wr));
+        if (settings) renderSettingsChips(settings);
+        const grid = document.getElementById("pgrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        for (let i = 0; i < 10; i++) {
+          if (i < n) {
+            const p = players[i];
+            const c = document.createElement("div");
+            c.className =
+              "pc" +
+              (p.isHost ? " host" : "") +
+              (p.hasSubmittedPunishment ? " done" : "");
+            c.innerHTML = `${renderAv(p.avatar, 22)}<span class="pname">${esc(p.name)}</span>${p.isHost ? '<span style="flex-shrink:0">👑</span>' : ""}${p.hasSubmittedPunishment ? '<span style="flex-shrink:0">✅</span>' : ""}`;
+            grid.appendChild(c);
+          } else {
+            const s = document.createElement("div");
+            s.className = "pslot";
+            s.textContent = `Slot ${i + 1}`;
+            grid.appendChild(s);
+          }
+        }
+      }
+      function startGame() {
+        sendWS({ type: "HOST_START_GAME" });
+      }
+      /* COUNTDOWN */
+      function startCountdown(from, callback) {
+        const overlay = document.getElementById("countdown-overlay"),
+          numEl = document.getElementById("countdown-num");
+        if (!overlay || !numEl) {
+          callback();
+          return;
+        }
+        overlay.classList.add("on");
+        let n = from;
+        numEl.textContent = n;
+        numEl.style.animation = "none";
+        void numEl.offsetWidth;
+        numEl.style.animation = "countPop .8s ease-out forwards";
+        const iv = setInterval(() => {
+          n--;
+          if (n <= 0) {
+            clearInterval(iv);
+            overlay.classList.remove("on");
+            callback();
+            return;
+          }
+          numEl.textContent = n;
+          numEl.style.animation = "none";
+          void numEl.offsetWidth;
+          numEl.style.animation = "countPop .8s ease-out forwards";
+        }, 1000);
+      }
+      /* COLLECTING */
+      function setupCollecting(msg) {
+        safeSet(
+          "pi-box",
+          "style.display",
+          S.punishmentSubmitted ? "none" : "flex",
+        );
+        safeSet(
+          "pi-done-box",
+          "style.display",
+          S.punishmentSubmitted ? "block" : "none",
+        );
+        const pt = document.getElementById("punch-txt");
+        if (pt) {
+          pt.value = "";
+          updateCharCount(pt);
+        }
+        const sb = document.getElementById("col-sub-btn");
+        if (sb) {
+          sb.disabled = false;
+          sb.textContent = "😈 Kirim Hukuman!";
+        }
+        const wc = msg.winnerCount ?? 3,
+          lc = msg.loserCount ?? 0;
+        safeSet(
+          "col-sub",
+          "textContent",
+          `${msg.playerCount} pemain — ${wc} juara 🏆, ${lc} yang kalah kena hukuman 💀`,
+        );
+        updateColProgress(0, msg.playerCount);
+        renderSubmitGrid(0);
+        let secs = Math.floor((msg.timeLimit || 60000) / 1000);
+        safeSet("col-timer", "textContent", secs);
+        stopColTimer();
+        S.colTimerInt = setInterval(() => {
+          secs = Math.max(0, secs - 1);
+          safeSet("col-timer", "textContent", secs);
+          if (secs <= 0) stopColTimer();
+        }, 1000);
+      }
+      function updateColProgress(submitted, total) {
+        safeSet("col-done", "textContent", submitted);
+        safeSet("col-total", "textContent", total);
+        safeSet(
+          "col-pb",
+          "style.width",
+          (total > 0 ? (submitted / total) * 100 : 0) + "%",
+        );
+        renderSubmitGrid(submitted);
+      }
+      function renderSubmitGrid(submittedCount = 0) {
+        const grid = document.getElementById("submit-grid");
+        if (!grid) return;
+        grid.innerHTML = "";
+        if (!S.allPlayers.length) {
+          for (let i = 0; i < submittedCount; i++) {
+            const c = document.createElement("div");
+            c.className = "psc done";
+            c.innerHTML = `<span class="pss">✅</span>`;
+            grid.appendChild(c);
+          }
+          return;
+        }
+        S.allPlayers.forEach((p, i) => {
+          const done = p.hasSubmittedPunishment || i < submittedCount;
+          const c = document.createElement("div");
+          c.className = "psc" + (done ? " done" : "");
+          c.innerHTML = `${renderAv(p.avatar, 20)}<span class="psname">${esc(p.name)}</span><span class="pss">${done ? "✅" : "⏳"}</span>`;
+          grid.appendChild(c);
+        });
+      }
+      function updateCharCount(el) {
+        const count = el?.value?.length || 0;
+        const counter = document.getElementById("punch-count");
+        if (counter) {
+          counter.textContent = count;
+          counter.style.color = count > 180 ? "var(--r)" : "var(--ink2)";
+        }
+      }
+      function submitPunishment() {
+        const txt = document.getElementById("punch-txt")?.value.trim() || "";
+        if (txt.length < 5) {
+          toast("Hukuman minimal 5 karakter! 😅", "warn");
+          return;
+        }
+        if (txt.length > 200) {
+          toast("Hukuman maksimal 200 karakter!", "warn");
+          return;
+        }
+        const sb = document.getElementById("col-sub-btn");
+        if (sb) {
+          sb.disabled = true;
+          sb.textContent = "⏳ Mengirim...";
+        }
+        sendWS({ type: "SUBMIT_PUNISHMENT", punishment: txt });
+      }
+      function stopColTimer() {
+        if (S.colTimerInt) {
+          clearInterval(S.colTimerInt);
+          S.colTimerInt = null;
+        }
+      }
+      /* GAME */
+      function showQuestion(msg) {
+        safeSet(
+          "qprog",
+          "textContent",
+          `${msg.questionNumber}/${msg.totalQuestions}`,
+        );
+        safeSet("qtxt", "textContent", msg.question + " = ?");
+        const ai = document.getElementById("ans-input"),
+          ab = document.getElementById("ans-btn");
+        if (ai) {
+          ai.value = "";
+          ai.disabled = false;
+          setTimeout(() => ai.focus(), 100);
+        }
+        if (ab) ab.disabled = false;
+        const fb = document.getElementById("afb");
+        if (fb) {
+          fb.textContent = "";
+          fb.className = "afb";
+        }
+      }
+      function submitAnswer() {
+        if (S.answered) return;
+        const v = document.getElementById("ans-input")?.value.trim();
+        if (v === "" || v === null || v === undefined) return;
+        const num = parseFloat(v);
+        if (isNaN(num)) {
+          toast("Masukkan angka yang valid!", "warn");
+          return;
+        }
+        S.answered = true;
+        sendWS({ type: "SUBMIT_ANSWER", answer: num });
+      }
+      function showAFB(msg) {
+        const fb = document.getElementById("afb");
+        if (!fb) return;
+        fb.textContent = msg.message;
+        fb.className = "afb " + (msg.correct ? "ok" : "no");
+      }
+      function startTimer(ms) {
+        stopTimer();
+        const bar = document.getElementById("tbar"),
+          bdg = document.getElementById("tbadge");
+        S.timerInt = setInterval(() => {
+          const rem = Math.max(0, S.timerEnd - Date.now()),
+            pct = (rem / ms) * 100,
+            secs = Math.ceil(rem / 1000);
+          if (bar) bar.style.width = pct + "%";
+          if (bdg) {
+            bdg.textContent = `${secs}s`;
+            bdg.className = "timer-badge" + (secs <= 5 ? " urgent" : "");
+          }
+          if (rem <= 0) stopTimer();
+        }, 100);
+      }
+      function stopTimer() {
+        if (S.timerInt) {
+          clearInterval(S.timerInt);
+          S.timerInt = null;
+        }
+        const b = document.getElementById("tbadge");
+        if (b) b.className = "timer-badge";
+      }
+      function renderLiveScores(scores) {
+        const list = document.getElementById("lslist");
+        if (!list) return;
+        list.innerHTML = "";
+        const wc = S.winnerCount || 3;
+        scores.forEach((p, i) => {
+          if (i === wc && i < scores.length) {
+            const sep = document.createElement("div");
+            sep.className = "dz-sep";
+            sep.textContent = "── 💀 DANGER ZONE 💀 ──";
+            list.appendChild(sep);
+          }
+          const row = document.createElement("div");
+          row.className = "sr" + (i === 0 ? " r1" : "");
+          const streakHtml =
+            S.gameSettings?.showStreak && p.streak > 1
+              ? `<span class="streak">🔥${p.streak}×</span>`
+              : "";
+          row.innerHTML = `<span class="srn">${["🥇", "🥈", "🥉"][i] || i + 1}</span>${renderAv(p.avatar, 22)}<span class="srname">${esc(p.name)}</span>${streakHtml}<span class="srpts">${p.score || 0}pts</span>`;
+          list.appendChild(row);
+        });
+      }
+      function spawnReaction(emoji) {
+        const el = document.createElement("div");
+        el.className = "reaction-popup";
+        el.textContent = emoji;
+        el.style.left = 20 + Math.random() * 60 + "%";
+        el.style.top = 30 + Math.random() * 40 + "%";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1300);
+      }
+      /* SPIN */
+      const WCOLS = [
+        "#FF6B6B",
+        "#4ECDC4",
+        "#FFD93D",
+        "#B57BFF",
+        "#6BCB77",
+        "#FF9F43",
+        "#FF6EB4",
+        "#4DABF7",
+        "#FFA94D",
+        "#74C0FC",
+      ];
+      function runSpin(pool, chosen, winners, losers, spinMs) {
+        safeSet("chosen-box", "style.display", "none");
+        safeSet("win-group", "style.display", "none");
+        safeSet("lose-group", "style.display", "none");
+        safeSet("spin-wait", "style.display", "block");
+        const canvas = document.getElementById("spinCanvas");
+        if (!canvas) return;
+        const wrap = document.getElementById("wheel-wrap");
+        const maxW = Math.min(window.innerWidth - 56, 270);
+        const size = Math.max(180, maxW);
+        canvas.width = size;
+        canvas.height = size;
+        canvas.style.width = size + "px";
+        canvas.style.height = size + "px";
+        if (wrap) {
+          wrap.style.width = size + "px";
+          wrap.style.height = size + "px";
+        }
+        const ctx = canvas.getContext("2d"),
+          cx = size / 2,
+          cy = size / 2,
+          r = cx - 6;
+        const items =
+          pool && pool.length > 0 ? pool : ["💀 Hukuman Misterius!"];
+        const n = items.length,
+          sl = (2 * Math.PI) / n;
+        const wi = items.indexOf(chosen),
+          ti = wi >= 0 ? wi : Math.floor(Math.random() * n);
+        const targetAngle =
+          8 * 2 * Math.PI + (2 * Math.PI - ti * sl - sl / 2 - Math.PI / 2);
+        let start = null;
+        const dur = spinMs || 6000;
+        function ease(t) {
+          return 1 - Math.pow(1 - t, 4);
+        }
+        function drawWheel(rot) {
+          ctx.clearRect(0, 0, size, size);
+          items.forEach((item, i) => {
+            const sa = rot + i * sl,
+              ea = sa + sl;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, sa, ea);
+            ctx.closePath();
+            ctx.fillStyle = WCOLS[i % WCOLS.length];
+            ctx.fill();
+            ctx.strokeStyle = "#1E1E2E";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(sa + sl / 2);
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#1E1E2E";
+            ctx.font = `bold ${n > 7 ? 8 : 11}px Nunito,sans-serif`;
+            ctx.fillText(
+              item.length > 22 ? item.substring(0, 20) + "…" : item,
+              r - 7,
+              4,
+            );
+            ctx.restore();
+          });
+          ctx.beginPath();
+          ctx.arc(cx, cy, Math.max(16, size * 0.08), 0, 2 * Math.PI);
+          ctx.fillStyle = "#fff";
+          ctx.fill();
+          ctx.strokeStyle = "#1E1E2E";
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          ctx.font = `bold ${Math.max(10, size * 0.05)}px sans-serif`;
+          ctx.textAlign = "center";
+          ctx.fillStyle = "#1E1E2E";
+          ctx.fillText("⚡", cx, cy + 4);
+        }
+        drawWheel(0);
+        requestAnimationFrame(function anim(ts) {
+          if (!start) start = ts;
+          const t = Math.min((ts - start) / dur, 1);
+          drawWheel(ease(t) * targetAngle);
+          if (t < 1) {
+            requestAnimationFrame(anim);
+            return;
+          }
+          safeSet("spin-wait", "style.display", "none");
+          safeSet("chosen-text", "textContent", chosen || "Hukuman Misterius!");
+          safeSet("chosen-box", "style.display", "block");
+          if (winners?.length) {
+            const wc = document.getElementById("win-chips");
+            if (wc) {
+              wc.innerHTML = "";
+              winners.forEach((w) => {
+                const c = document.createElement("div");
+                c.className = "pchip wch";
+                c.innerHTML = `${renderAv(w.avatar, 20)}<span>${esc(w.name)}</span>`;
+                wc.appendChild(c);
+              });
+            }
+            safeSet("win-group", "style.display", "block");
+          }
+          if (losers?.length) {
+            const lc = document.getElementById("lose-chips");
+            if (lc) {
+              lc.innerHTML = "";
+              losers.forEach((l) => {
+                const c = document.createElement("div");
+                c.className = "pchip lch";
+                c.innerHTML = `${renderAv(l.avatar, 20)}<span>${esc(l.name)}</span>`;
+                lc.appendChild(c);
+              });
+            }
+            safeSet("lose-group", "style.display", "block");
+          }
+        });
+      }
+      /* GAME OVER */
+      const RI = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+      function renderGameOver(results) {
+        if (!results?.length) return;
+        const anyP = results.find((r) => r.punishment)?.punishment;
+        safeSet("punish-txt", "textContent", anyP || "—");
+        safeSet("punish-banner", "style.display", anyP ? "block" : "none");
+        const list = document.getElementById("results-list");
+        if (!list) return;
+        list.innerHTML = "";
+        const wc = S.winnerCount || 3;
+        let sep = false;
+        results.forEach((r, i) => {
+          if (i === wc && !sep) {
+            sep = true;
+            const s = document.createElement("div");
+            s.className = "res-sep";
+            s.textContent = "💀 ZONA HUKUMAN 💀";
+            list.appendChild(s);
+          }
+          const row = document.createElement("div");
+          row.className =
+            "rrow" + (r.rank === 1 ? " top1" : r.rank <= wc ? " win" : " lose");
+          row.innerHTML = `<span class="rbadge">${RI[r.rank - 1] || r.rank}</span>${renderAv(r.avatar, 32)}<span class="rname">${esc(r.name)}</span><span class="rscore">${r.score || 0}pts</span>`;
+          list.appendChild(row);
+        });
+        safeSet("play-again-btn", "style.display", S.isHost ? "flex" : "none");
+        safeSet(
+          "play-again-wait",
+          "style.display",
+          S.isHost ? "none" : "block",
+        );
+      }
+      function requestReset() {
+        sendWS({ type: "HOST_RESET_GAME" });
+      }
+      function resetClientState() {
+        S.answered = false;
+        S.punishmentSubmitted = false;
+        S.allPlayers = [];
+        stopTimer();
+        stopColTimer();
+        clearReconnect();
+        safeSet("lslist", "innerHTML", "");
+        safeSet("results-list", "innerHTML", "");
+        const fb = document.getElementById("afb");
+        if (fb) {
+          fb.textContent = "";
+          fb.className = "afb";
+        }
+        safeSet("punish-banner", "style.display", "none");
+        safeSet("play-again-btn", "style.display", "none");
+        safeSet("play-again-wait", "style.display", "none");
+      }
+      /* ═══════════════════════════════════════════
+   MUSIC SYSTEM — MP3 Based
+   menu.mp3  → backsound menu/lobby (looping)
+   game.mp3  → backsound saat kuis berlangsung
+   ═══════════════════════════════════════════ */
+      const AUDIO = {
+        menu: null,
+        game: null,
+        current: null, // 'menu' | 'game' | null
+        muted: false,
+      };
+
+      function initAudio() {
+        if (AUDIO.menu) return; // sudah diinit
+        AUDIO.menu = new Audio("/menu.mp3");
+        AUDIO.menu.loop = true;
+        AUDIO.menu.volume = 0.5;
+        AUDIO.game = new Audio("/game.mp3");
+        AUDIO.game.loop = true;
+        AUDIO.game.volume = 0.6;
+      }
+
+      /** Putar track tertentu ('menu' atau 'game'), hentikan yang lain */
+      function playTrack(name) {
+        if (AUDIO.muted) {
+          AUDIO.current = name;
+          return;
+        }
+        initAudio();
+        const track = AUDIO[name];
+        if (!track) return;
+
+        // Sudah playing track yang sama? biarkan
+        if (AUDIO.current === name && !track.paused) return;
+
+        // Hentikan track yang sedang main (fade out singkat)
+        const other = name === "menu" ? "game" : "menu";
+        const otherTrack = AUDIO[other];
+        if (otherTrack && !otherTrack.paused) {
+          otherTrack.pause();
+          otherTrack.currentTime = 0;
+        }
+
+        AUDIO.current = name;
+        track.currentTime = 0;
+        const playPromise = track.play();
+        if (playPromise)
+          playPromise.catch(() => {
+            // Autoplay diblokir browser — akan dicoba lagi saat user interaksi
+            console.warn(
+              "[Audio] Autoplay blocked, akan dicoba saat interaksi user",
+            );
+          });
+
+        updateMusicBtn(true);
+      }
+
+      /** Hentikan semua musik */
+      function musicStop() {
+        if (AUDIO.menu) {
+          AUDIO.menu.pause();
+          AUDIO.menu.currentTime = 0;
+        }
+        if (AUDIO.game) {
+          AUDIO.game.pause();
+          AUDIO.game.currentTime = 0;
+        }
+        AUDIO.current = null;
+        updateMusicBtn(false);
+      }
+
+      /** Toggle mute/unmute */
+      function toggleMusic() {
+        initAudio();
+        if (AUDIO.muted) {
+          // Unmute → lanjutkan track yang terakhir aktif
+          AUDIO.muted = false;
+          if (AUDIO.current) playTrack(AUDIO.current);
+          else playTrack("menu");
+        } else {
+          // Mute sementara (tidak reset posisi)
+          AUDIO.muted = true;
+          if (AUDIO.menu) AUDIO.menu.pause();
+          if (AUDIO.game) AUDIO.game.pause();
+          updateMusicBtn(false);
+        }
+      }
+
+      function musicStart() {
+        playTrack("menu");
+      } // alias untuk menu
+
+      function updateMusicBtn(playing) {
+        const btn = document.getElementById("music-btn");
+        if (!btn) return;
+        if (AUDIO.muted) {
+          btn.textContent = "🔇";
+          btn.classList.remove("playing");
+        } else {
+          btn.textContent = playing ? "🎵" : "🔇";
+          if (playing) btn.classList.add("playing");
+          else btn.classList.remove("playing");
+        }
+      }
+
+      // Coba autoplay saat user pertama kali tap/klik halaman
+      document.addEventListener(
+        "click",
+        () => {
+          if (!AUDIO.muted && AUDIO.current) {
+            const t = AUDIO[AUDIO.current];
+            if (t && t.paused) t.play().catch(() => {});
+          }
+        },
+        { once: false },
+      );
+    </script>
+  </body>
+</html>

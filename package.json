@@ -1,0 +1,21 @@
+{
+  "name": "matharena",
+  "version": "3.0.0",
+  "description": "MathArena - Real-time Multiplayer Math Quiz Game",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.0",
+    "@hono/node-ws": "^1.0.4",
+    "@hono/oauth-providers": "^0.7.0",
+    "dotenv": "^16.4.5",
+    "hono": "^4.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.3",
+    "ws": "^8.18.0"
+  }
+}
