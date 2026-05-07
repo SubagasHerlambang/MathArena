@@ -3858,7 +3858,8 @@
       }
       function openWS(roomCode, password = "") {
         if (!S.token) return;
-        const url = `ws://${location.host}/ws?token=${encodeURIComponent(S.token)}&roomCode=${roomCode}&password=${encodeURIComponent(password)}`;
+        const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const url = `${protocol}//${location.host}/ws?token=${encodeURIComponent(S.token)}&roomCode=${roomCode}&password=${encodeURIComponent(password)}`;
         setWsStatus("connecting");
         let ws;
         try {
